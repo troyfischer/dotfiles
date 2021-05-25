@@ -4,5 +4,7 @@
 tmp/
 
 Code/.config/Code/*
+!Code/.config/Code/User
+Code/.config/Code/User/*
 !Code/.config/Code/User/settings.json
 !Code/.config/Code/User/keybindings.json
