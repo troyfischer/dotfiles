@@ -1,0 +1,8 @@
+.DS_Store
+.idea
+*.log
+tmp/
+
+Code/.config/Code/*
+!Code/.config/Code/User/settings.json
+!Code/.config/Code/User/keybindings.json

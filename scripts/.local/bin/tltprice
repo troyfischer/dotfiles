@@ -1,0 +1,2 @@
+#!/bin/sh
+curl -s https://www.marketwatch.com/investing/fund/tlt | grep "iShares 20+ Year Treasury Bond ETF" | grep price | cut -d ',' -f6 | cut -d ':' -f2 | tr -d '"' | sed 's/^/\$/'

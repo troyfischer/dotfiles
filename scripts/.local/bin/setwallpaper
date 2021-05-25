@@ -1,0 +1,10 @@
+#!/bin/sh
+
+WALLPAPERS_HD="${XDG_DATA_HOME:-$HOME/.local/share}/wallpapers/HD"
+WALLPAPERS_WQHD="${XDG_DATA_HOME:-$HOME/.local/share}/wallpapers/WQHD"
+FEH="feh --bg-fill --randomize"
+LAPTOP=$(xrandr | rg "eDP-1 connected primary")
+
+[ ! -z "$LAPTOP" ] && \
+	$FEH "$WALLPAPERS_HD/"* || \
+	$FEH "$WALLPAPERS_WQHD/"*

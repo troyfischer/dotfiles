@@ -1,0 +1,2 @@
+#!/bin/sh
+curl -s https://www.marketwatch.com/investing/index/DXY | grep "U.S. Dollar Index (DXY)" | grep price | cut -d ',' -f6 | cut -d ':' -f2 | tr -d '"' | sed 's/^/\$/'

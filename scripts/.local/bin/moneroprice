@@ -1,0 +1,2 @@
+#!/bin/sh
+curl -s usd.rate.sx/xmr@1h | rg "avg:" | awk '{print $2}' | tr -d "[:cntrl:]" | cut -d "[" -f1

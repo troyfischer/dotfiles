@@ -1,0 +1,4 @@
+#!/bin/sh
+mkdir -p ~/.local/share/packages/whls
+cd ~/.local/share/packages/whls
+pip download python-language-server[all]

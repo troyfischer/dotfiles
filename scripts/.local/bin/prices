@@ -1,0 +1,12 @@
+# bitcoin
+curl -s usd.rate.sx/btc@1h | rg "avg:" | awk '{print $2}' | tr -d "[:cntrl:]" | cut -d "[" -f1
+# monero
+curl -s usd.rate.sx/xmr@1h | rg "avg:" | awk '{print $2}' | tr -d "[:cntrl:]" | cut -d "[" -f1
+# DXY
+curl -s https://www.marketwatch.com/investing/index/DXY | rg "U.S. Dollar Index (DXY)" | rg price | cut -d ',' -f6 | cut -d ':' -f2 | tr -d '"' | sed 's/^/\$/'
+# tlt
+curl -s https://www.marketwatch.com/investing/fund/tlt | rg "iShares 20+ Year Treasury Bond ETF" | rg price | cut -d ',' -f6 | cut -d ':' -f2 | tr -d '"' | sed 's/^/\$/'
+# gold
+curl -s https://www.apmex.com/gold-price | rg "Ask" | head -n 1 | awk '{$1=$1;print}' | cut -d ' ' -f3 | cut -d '>' -f2 | cut -d '<' -f1
+# silver
+curl -s https://www.apmex.com/silver-price | rg "Ask" | head -n 1 | awk '{$1=$1;print}' | cut -d ' ' -f3 | cut -d '>' -f2 | cut -d '<' -f1
