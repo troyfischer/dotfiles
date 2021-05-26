@@ -8,3 +8,6 @@ Code/.config/Code/*
 Code/.config/Code/User/*
 !Code/.config/Code/User/settings.json
 !Code/.config/Code/User/keybindings.json
+
+# composer is a binary file I move from php install... don't track
+scripts/.local/bin/composer
