@@ -14,7 +14,3 @@ export PATH="$HOME/.local/bin:$HOME/.emacs.d/bin:$PATH"
 # XDG
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATE_HOME="$HOME/.local/share"
-
-# xsecurelock settings
-export XSECURELOCK_AUTH_TIMEOUT="20"
-export XSECURELOCK_PASSWORD_PROMPT="emoticon"

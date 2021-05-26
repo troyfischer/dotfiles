@@ -1131,7 +1131,7 @@
     }
   ],
   "keyboard.dispatch": "keyCode",
-  "workbench.colorTheme": "Visual Studio Dark",
+  "workbench.colorTheme": "Nord",
   "C_Cpp.updateChannel": "Insiders",
   "C_Cpp.intelliSenseEngine": "Disabled"
 }
