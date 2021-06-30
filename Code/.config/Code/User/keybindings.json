@@ -112,8 +112,8 @@
   },
   {
     "key": "ctrl+l",
-    "when": "sideBarFocus",
     "command": "workbench.action.focusActiveEditorGroup"
+    "when": "sideBarFocus",
   },
   {
     "key": "ctrl+k",
