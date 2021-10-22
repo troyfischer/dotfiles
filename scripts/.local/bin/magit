@@ -1,8 +1,0 @@
-#!/bin/bash
-
-
-if git rev-parse --git-dir > /dev/null 2>&1; then
-  emacsclient -nw --eval "(magit-status)"
-else
-  echo "not a git repo..."
-fi
