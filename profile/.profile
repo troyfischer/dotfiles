@@ -13,7 +13,6 @@ unsetopt PROMPT_SP
 
 # Default programs:
 export EDITOR="emacs"
-export TERMINAL="alacritty"
 export BROWSER="brave"
 
 # ~/ Clean-up:
