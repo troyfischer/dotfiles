@@ -9,8 +9,6 @@
 # Adds `~/.local/bin` to $PATH
 export PATH="$PATH:${$(find ~/.local/bin -type d -printf %p:)%%:}"
 
-unsetopt PROMPT_SP
-
 # Default programs:
 export EDITOR="emacs"
 export BROWSER="brave"
