@@ -3,3 +3,13 @@
 
 * Dotfiles
 Organizing dotfiles in this repository for quick start up time on a fresh computer. Using [[https://www.gnu.org/software/stow/][GNU Stow]] to create the symbolic links.
+
+* Issues
+** Browser pass extension problems
+I've had issues getting browserpass to work on some of my recent installs. Solved via this link [[https://github.com/browserpass/browserpass-extension/issues/158][github-fix]].
+
+Specifically this comment (may need modification depending on the browser in use):
+#+begin_src sh
+sudo mkdir -p /etc/opt/chrome/native-messaging-hosts/
+sudo ln -s /etc/chromium/native-messaging-hosts/com.github.browserpass.native.json  /etc/opt/chrome/native-messaging-hosts/com.github.browserpass.native.json
+#+end_src
