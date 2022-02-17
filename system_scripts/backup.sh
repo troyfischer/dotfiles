@@ -1,17 +1,20 @@
 #!/bin/sh
 
-# mount the device yourself and change the owner
-sudo chown troy:troy ~/tmp
+read -p "Is the backup device mounted to ~/tmp? [Y/n]: " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    sudo chown troy:troy ~/tmp
 
-# backup home directory
-rsync -aPv ~/Documents ~/tmp/ && \
-    rsync -aPv ~/dotfiles ~/tmp/ && \
-    rsync -aPv ~/org ~/tmp/ && \
-    rsync -aPv ~/Pictures ~/tmp/ && \
-    rsync -aPv ~/Videos ~/tmp/ && \
-    rsync -aPv ~/.doom.d ~/tmp/ && \
-    rsync -aPv ~/emacs.d.zip ~/tmp/ && \
-    rsync -aPv ~/.gnupg ~/tmp/ && \
-    rsync -aPv ~/.password-store ~/tmp/ && \
-    rsync -aPv ~/.ssh ~/tmp/ && \
-    rsync -aPv ~/.vscode ~/tmp/
+    # backup home directory
+    rsync -aPv "$HOME/Documents" ~/tmp/ && \
+    rsync -aPv "$HOME/Calibre Library" ~/tmp/ && \
+    rsync -aPv "$HOME/dotfiles" ~/tmp/ && \
+    rsync -aPv "$HOME/dev" ~/tmp/ && \
+    rsync -aPv "$HOME/org" ~/tmp/ && \
+    rsync -aPv "$HOME/Pictures" ~/tmp/ && \
+    rsync -aPv "$HOME/Videos" ~/tmp/ && \
+    rsync -aPv "$HOME/.gnupg" ~/tmp/ && \
+    rsync -aPv "$HOME/.local/share/password-store" ~/tmp/ && \
+    rsync -aPv "$HOME/.ssh" ~/tmp/
+fi

@@ -1,4 +1,6 @@
 #!/bin/sh
+sudo apt update && sudo apt upgrade ^ sudo apt install git
+
 read -p "Update /etc/hosts? [Y/n]: " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]
@@ -25,27 +27,6 @@ then
     curl -L https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip --output ~/Downloads/Font.zip --silent && unzip -qq ~/Downloads/Font.zip -d ~/Downloads/FONT_UNZIP && cp ~/Downloads/FONT_UNZIP/ubuntu*/*.ttf "$FONTS_DIR" && rm -rf ~/Downloads/FONT_UNZIP ~/Downloads/Font.zip
 fi
 
-read -p "Clone README? [Y/n]: " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-    README="$HOME/org/README"
-    echo "Cloning README"
-    git clone https://github.com/troyfischer/troyfischer.git ~/README || echo "$README already exists! Skipping..."
-fi
-
-NAME="neovim"
-read -p "Install packages $NAME? [Y/n]: " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-    echo "Installing packages ~$NAME..."
-    APP_IMAGE_DOWNLOAD_DIR="$HOME/.local/share/packages/appimages"
-    rm -rf "$APP_IMAGE_DOWNLOAD_DIR" && mkdir -p "$APP_IMAGE_DOWNLOAD_DIR"
-    curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage --output "$APP_IMAGE_DOWNLOAD_DIR/nvim.appimage"
-    sudo cp "$APP_IMAGE_DOWNLOAD_DIR/nvim.appimage" /usr/bin/nvim
-fi
-
 # utils
 NAME="utils"
 read -p "Install packages $NAME? [Y/n]: " -n 1 -r
@@ -53,8 +34,8 @@ echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     echo "Installing packages ~$NAME..."
-    PACKAGES="redshift redshift-gtk unclutter ripgrep mpv isync htop xdotool figlet libtool-bin sqlite3 \
-        pass pass-extension-otp webext-browserpass emacs alacritty code"
+    PACKAGES="unclutter ripgrep mpv isync htop xdotool figlet libtool-bin sqlite3 \
+        pass pass-extension-otp webext-browserpass"
     sudo apt install -y $PACKAGES
 fi
 

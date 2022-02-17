@@ -1,7 +1,0 @@
-#!/bin/sh
-
-WALLPAPERS_DIR=~/.local/share/wallpapers
-WQHD_DIR=$WALLPAPERS_DIR/WQHD
-HD_DIR=$WALLPAPERS_DIR/HD
-
-gsettings set org.gnome.desktop.background picture-uri `ls $WQHD_DIR/* | shuf -n1`
