@@ -35,7 +35,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 then
     echo "Installing packages ~$NAME..."
     PACKAGES="unclutter ripgrep mpv isync htop xdotool figlet libtool-bin sqlite3 \
-        pass pass-extension-otp webext-browserpass"
+        pass pass-extension-otp webext-browserpass stow"
     sudo apt install -y $PACKAGES
 fi
 
