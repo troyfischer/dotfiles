@@ -11,7 +11,7 @@ Do I need this? Not sure tbh.
 (setq user-full-name "Troy Fischer"
       user-mail-address "troytfischer@gmail.com"
       display-line-numbers-type t
-      doom-theme 'wombat
+      doom-theme 'doom-zenburn
       password-cache-expiry nil   ;; only type password once
       delete-by-moving-to-trash t ;; move files to trash instead of perma deletion
       doom-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size 15)
@@ -76,7 +76,7 @@ Do I need this? Not sure tbh.
 #+end_src
 * Vertico
 #+begin_src emacs-lisp
-(map! :map vertico-map "C-l" #'vertico-exit) ;; allow C-l to select an item
+(map! :map vertico-map "C-l" #'vertico-directory-enter) ;; allow C-l to select an item
 #+end_src
 * Z-Notes
 Potentially helpful hints.
