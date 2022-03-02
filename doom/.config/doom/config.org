@@ -15,7 +15,7 @@ Do I need this? Not sure tbh.
       password-cache-expiry nil   ;; only type password once
       delete-by-moving-to-trash t ;; move files to trash instead of perma deletion
       doom-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size 15)
-      doom-variable-pitch-font (font-spec :family "Ubuntu" :size 15)
+      doom-variable-pitch-font (font-spec :family "Source Sans Pro" :size 15)
       doom-big-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size 24))
 ;; transparency
 (set-frame-parameter (selected-frame) 'alpha '(85 85))
