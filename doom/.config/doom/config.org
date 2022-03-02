@@ -46,12 +46,18 @@ Do I need this? Not sure tbh.
   (setq lsp-java-code-generation-hash-code-equals-use-java7objects t))
 #+end_src
 ** Python
+Jedi is working best so far. Install via:
+#+begin_src sh :tangle no
+pip3 install -U jedi-language-server
+#+end_src
+
 #+begin_src emacs-lisp
-(use-package! lsp-pyright
+(use-package! lsp-jedi
   :ensure t
-  :hook (python-mode . (lambda ()
-                          (require 'lsp-pyright)
-                          (lsp-deferred))))
+  :config
+  (with-eval-after-load "lsp-mode"
+    (add-to-list 'lsp-disabled-clients 'pyls)
+    (add-to-list 'lsp-enabled-clients 'jedi)))
 #+end_src
 *** Pyvenv
 #+begin_src emacs-lisp

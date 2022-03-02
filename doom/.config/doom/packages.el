@@ -59,3 +59,6 @@
 
 ;; ripgrep
 (package! rg)
+
+;; jedi language server
+(package! lsp-jedi)
