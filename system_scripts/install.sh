@@ -1,5 +1,10 @@
 #!/bin/sh
-sudo apt update && sudo apt upgrade ^ sudo apt install git
+sudo apt update && sudo apt upgrade && sudo apt install git build-essential
+
+echo "Installing zsh"
+sudo apt install -y zsh
+echo "Changing shell to zsh"
+chsh -s $(which zsh)
 
 read -p "Update /etc/hosts? [Y/n]: " -n 1 -r
 echo
@@ -23,8 +28,6 @@ then
     curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraMono.zip --output ~/Downloads/Font.zip --silent && unzip -qq ~/Downloads/Font.zip -d ~/Downloads/FONT_UNZIP && cp ~/Downloads/FONT_UNZIP/*.otf "$FONTS_DIR" && rm -rf ~/Downloads/FONT_UNZIP ~/Downloads/Font.zip
     # jetbrains
     curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/JetBrainsMono.zip --output ~/Downloads/Font.zip --silent && unzip -qq ~/Downloads/Font.zip -d ~/Downloads/FONT_UNZIP && cp ~/Downloads/FONT_UNZIP/*.ttf "$FONTS_DIR" && rm -rf ~/Downloads/FONT_UNZIP ~/Downloads/Font.zip
-    # ubuntu
-    curl -L https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip --output ~/Downloads/Font.zip --silent && unzip -qq ~/Downloads/Font.zip -d ~/Downloads/FONT_UNZIP && cp ~/Downloads/FONT_UNZIP/ubuntu*/*.ttf "$FONTS_DIR" && rm -rf ~/Downloads/FONT_UNZIP ~/Downloads/Font.zip
 fi
 
 # utils
@@ -73,7 +76,12 @@ then
     echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list
     sudo apt update
     sudo apt install -y brave-browser
+
+    echo "Applying fix to be able to use browserpass with brave"
+    sudo mkdir -p /etc/opt/chrome/native-messaging-hosts/
+    sudo ln -s /etc/chromium/native-messaging-hosts/com.github.browserpass.native.json  /etc/opt/chrome/native-messaging-hosts/com.github.browserpass.native.json
 fi
+
 
 # build emacs with native comp
 NAME="Emacs Native Compilation"
@@ -100,4 +108,7 @@ then
     ./configure --with-cairo --with-modules --without-compress-install --with-x-toolkit=no --with-gnutls --without-gconf --without-xwidgets --without-toolkit-scroll-bars --without-xaw3d --without-gsettings --with-mailutils --with-native-compilation --with-json --with-harfbuzz --with-imagemagick --with-jpeg --with-png --with-rsvg --with-tiff --with-wide-int --with-xft --with-xml2 --with-xpm CFLAGS="-O3 -mtune=native -march=native -fomit-frame-pointer" prefix=/usr/local
     make -j4 NATIVE_FULL_AOT=1
     sudo make install
+
+    echo "Cloning doom emacs"
+    git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.config/emacs
 fi
