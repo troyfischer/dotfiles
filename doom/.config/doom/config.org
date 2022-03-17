@@ -11,7 +11,7 @@ Do I need this? Not sure tbh.
 (setq user-full-name "Troy Fischer"
       user-mail-address "troytfischer@gmail.com"
       display-line-numbers-type t
-      doom-theme 'doom-zenburn
+      doom-theme 'doom-one
       password-cache-expiry nil   ;; only type password once
       delete-by-moving-to-trash t ;; move files to trash instead of perma deletion
       doom-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size 15)
@@ -53,11 +53,12 @@ pip3 install -U jedi-language-server
 
 #+begin_src emacs-lisp
 (use-package! lsp-jedi
-  :ensure t
+  :ensure nil
   :config
   (with-eval-after-load "lsp-mode"
     (add-to-list 'lsp-disabled-clients 'pyls)
-    (add-to-list 'lsp-enabled-clients 'jedi)))
+    (add-to-list 'lsp-enabled-clients 'jedi))
+  (add-to-list 'lsp-jedi-python-library-directories "~/.local/share/virtualenvs"))
 #+end_src
 *** Pyvenv
 #+begin_src emacs-lisp
@@ -73,20 +74,45 @@ pip3 install -U jedi-language-server
 #+end_src
 * Org
 #+begin_src emacs-lisp
-(setq org-directory "~/org/"
-      org-agenda-files '("~/org/agenda/agenda.org")
-      org-agenda-span 30
-      org-hide-emphasis-markers nil)
-;; disable org mode auto complete suggestions
-(add-hook 'org-mode-hook (lambda () (company-mode -1)))
+(use-package! org
+  :ensure nil
+  :config
+  (setq org-directory "~/org/"
+        org-agenda-files (list (concat org-directory "agenda.org"))
+        org-default-notes-file (concat org-directory "notes.org")
+        org-agenda-span 30
+        org-hide-emphasis-markers t)
+  (add-to-list 'org-refile-targets '(org-default-notes-file :maxlevel . 3))
+  ;; disable org mode auto complete suggestions
+  (add-hook! 'org-mode-hook #'(lambda () (company-mode -1)))
+  ;; org blog
+  (setq org-publish-project-alist
+      '(("blog-html"
+         :base-directory "~/dev/blog/"
+         :base-extension "org"
+         :publishing-directory "~/public_html/"
+         :recursive t
+         :publishing-function org-html-publish-to-html
+         :headline-levels 4
+         :auto-preamble t)
+        ("blog-static"
+         :base-directory "~/org/"
+         :base-extension "ttf\\|woff2\\|scss\\|svg\\|css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+         :publishing-directory "~/public_html/"
+         :recursive t
+         :publishing-function org-publish-attachment))))
 #+end_src
 * Vertico
 #+begin_src emacs-lisp
 (map! :map vertico-map "C-l" #'vertico-directory-enter) ;; allow C-l to select an item
 #+end_src
+* Vterm
+#+begin_src emacs-lisp
+(map! :map vterm-mode-map :i "C-y" #'vterm-yank) ;; provide paste in insert mode
+#+end_src
 * Z-Notes
 Potentially helpful hints.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one

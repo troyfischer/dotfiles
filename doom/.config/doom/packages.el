@@ -60,5 +60,8 @@
 ;; ripgrep
 (package! rg)
 
-;; jedi language server
+;; for use with the python jedi-language-server
 (package! lsp-jedi)
+
+;; sqlformat
+(package! sqlformat)
