@@ -104,6 +104,14 @@ pip3 install -U jedi-language-server
          :recursive t
          :publishing-function org-publish-attachment))))
 #+end_src
+* Password Store Keybindings
+#+begin_src emacs-lisp
+(map! :leader
+      (:prefix-map ("P" . "Passwords")
+       :desc "password-store-copy" "c" #'password-store-copy
+       :desc "password-store-edit" "e" #'password-store-edit
+       :desc "password-store-otp-token-copy" "o" #'password-store-otp-token-copy))
+#+end_src
 * Vertico
 #+begin_src emacs-lisp
 (map! :map vertico-map "C-l" #'vertico-directory-enter) ;; allow C-l to select an item
