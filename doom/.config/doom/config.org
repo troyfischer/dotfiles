@@ -22,6 +22,9 @@ Do I need this? Not sure tbh.
 (setq display-time-mode t
       display-time-format "%l:%M %p"
       display-time-default-load-average nil)
+
+;; line numbers in all modes
+(global-display-line-numbers-mode)
 #+end_src
 * Dashboard
 #+begin_src emacs-lisp
