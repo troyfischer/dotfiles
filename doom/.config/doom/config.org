@@ -117,7 +117,7 @@ pip3 install -U jedi-language-server
 #+end_src
 * Projectile
 #+begin_src emacs-lisp
-(map! :leader :desc "ripgrep" "p R" #'projectile-ripgrep)
+(map! :leader :desc "ripgrep" "p G" #'projectile-ripgrep)
 #+end_src
 * Vertico
 #+begin_src emacs-lisp
