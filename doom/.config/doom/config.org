@@ -19,9 +19,9 @@ Do I need this? Not sure tbh.
       doom-big-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size 24))
 
 ;; display time in modeline
-(setq display-time-mode t
-      display-time-format "%l:%M %p"
+(setq display-time-format "%l:%M %p"
       display-time-default-load-average nil)
+(display-time-mode)
 
 ;; line numbers in all modes
 (global-display-line-numbers-mode)
