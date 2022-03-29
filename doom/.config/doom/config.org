@@ -115,6 +115,10 @@ pip3 install -U jedi-language-server
        :desc "password-store-edit" "e" #'password-store-edit
        :desc "password-store-otp-token-copy" "o" #'password-store-otp-token-copy))
 #+end_src
+* Projectile
+#+begin_src emacs-lisp
+(map! :leader :desc "ripgrep" "p R" #'projectile-ripgrep)
+#+end_src
 * Vertico
 #+begin_src emacs-lisp
 (map! :map vertico-map "C-l" #'vertico-directory-enter) ;; allow C-l to select an item
