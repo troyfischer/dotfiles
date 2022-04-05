@@ -65,17 +65,26 @@ pip3 install -U jedi-language-server
     (add-to-list 'lsp-enabled-clients 'jedi))
   (add-to-list 'lsp-jedi-python-library-directories "~/.local/share/virtualenvs"))
 #+end_src
-*** Pyvenv
-#+begin_src emacs-lisp
-(use-package! pyvenv
-  :config
-  (setq pyvenv-post-activate-hooks
-        (list (lambda ()
-                (setq python-shell-interpreter (concat pyvenv-virtual-env "bin/python3")))))
-  (setq pyvenv-post-deactivate-hooks
-        (list (lambda ()
-                (setq python-shell-interpreter "python3")))))
+*** Debugging
+=debugpy= is recommended
+#+begin_src sh :tangle no
+pip3 install debugpy ptvsd --user
+#+end_src
 
+#+begin_src emacs-lisp
+(after! dap-mode
+  (setq dap-python-debugger 'debugpy)
+  (require 'dap-python))
+(map! :leader
+      (:prefix-map ("d" . "debug")
+       :desc "dap-breakpoint-toggle" "t" #'dap-breakpoint-toggle
+       :desc "dap-debug" "d" #'dap-debug
+       :desc "dap-debug-recent" "r" #'dap-debug-recent
+       :desc "dap-debug-last" "l" #'dap-debug-last
+       :desc "dap-debug-edit-template" "e" #'dap-debug-edit-template
+       (:prefix-map ("u" . "ui")
+        :desc "dap-ui-breakpoints-list" "l" #'dap-ui-breakpoints-list
+        :desc "dap-ui-breakpoints-delete" "d" #'dap-ui-breakpoints-delete)))
 #+end_src
 * Org
 #+begin_src emacs-lisp
