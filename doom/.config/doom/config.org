@@ -75,6 +75,9 @@ pip3 install debugpy ptvsd --user
 (after! dap-mode
   (setq dap-python-debugger 'debugpy)
   (require 'dap-python))
+(defun refresh-breakpoints ()
+  (interactive)
+  (set-window-buffer nil (current-buffer)))
 (map! :leader
       (:prefix-map ("d" . "debug")
        :desc "dap-breakpoint-toggle" "t" #'dap-breakpoint-toggle
@@ -82,6 +85,8 @@ pip3 install debugpy ptvsd --user
        :desc "dap-debug-recent" "r" #'dap-debug-recent
        :desc "dap-debug-last" "l" #'dap-debug-last
        :desc "dap-debug-edit-template" "e" #'dap-debug-edit-template
+       :desc "dap-next" "n" #'dap-next
+       :desc "refresh breakpoints" "R" #'refresh-breakpoints
        (:prefix-map ("u" . "ui")
         :desc "dap-ui-breakpoints-list" "l" #'dap-ui-breakpoints-list
         :desc "dap-ui-breakpoints-delete" "d" #'dap-ui-breakpoints-delete)))
