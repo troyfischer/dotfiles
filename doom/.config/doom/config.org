@@ -115,7 +115,7 @@ pip3 install debugpy ptvsd --user
          :headline-levels 4
          :auto-preamble t)
         ("blog-static"
-         :base-directory "~/org/"
+         :base-directory "~/dev/blog/"
          :base-extension "ttf\\|woff2\\|scss\\|svg\\|css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
          :publishing-directory "~/public_html/"
          :recursive t
