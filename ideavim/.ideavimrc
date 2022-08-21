@@ -55,6 +55,8 @@ map <leader>wl <C-w>l
 let g:WhichKeyDesc_window_left = "<leader>wl left"
 map <leader>wh <C-w>h
 let g:WhichKeyDesc_window_right = "<leader>wh right"
+map <leader>wm <Action>(HideAllWindows)
+let g:WhichKeyDesc_focus_code = "<leader>wm focus code windows"
 
 " Code
 let g:WhichKeyDesc_code = "<leader>c code"
@@ -64,8 +66,6 @@ map <leader>co <Action>(OptimizeImports)
 let g:WhichKeyDesc_optimize_imports = "<leader>co optimize imports"
 map <leader>cd <Action>(GotoDeclaration)
 let g:WhichKeyDesc_go_to_declaration = "<leader>cd go to declaration"
-map <leader>cf <Action>(HideAllWindows)
-let g:WhichKeyDesc_focus_code = "<leader>cf focus code windows"
 
 " Folding
 let g:WhichKeyDesc_folding = "<leader>z folding"
