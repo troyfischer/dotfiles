@@ -14,11 +14,12 @@ set surround
 " smart joins
 set ideajoin
 
+
+let mapleader = " "
+
 " Misc
 map <leader>vr <Action>(IdeaVim.ReloadVimRc.reload)
 map <leader>h :noh<CR>
-
-let mapleader = " "
 
 " Find
 let g:WhichKeyDesc_find = "<leader>f find"
@@ -57,6 +58,8 @@ let g:WhichKeyDesc_window_right = "<leader>wh right"
 
 " Code
 let g:WhichKeyDesc_code = "<leader>c code"
+map <leader>ca <Action>(ShowIntentionActions)
+let g:WhichKeyDesc_actions = "<leader>ca actions"
 map <leader>co <Action>(OptimizeImports)
 let g:WhichKeyDesc_optimize_imports = "<leader>co optimize imports"
 map <leader>cd <Action>(GotoDeclaration)
@@ -81,7 +84,13 @@ map <leader>gg <Action>(Tool_External Tools_Magit)
 let g:WhichKeyDesc_magit = "<leader>gg open magit buffer"
 map <leader>gv <Action>(ActivateVersionControlToolWindow)
 let g:WhichKeyDesc_version_control_window = "<leader>gv version control window"
-map <leader>go <Action>(uk.co.ben_gibson.git.link.ui.actions.menu.BrowserAction)
+
+let g:WhichKeyDesc_git_remote = "<leader>go git remote"
+map <leader>goo <Action>(Github.Open.In.Browser)
+let g:WhichKeyDesc_open_remote = "<leader>goo open remote"
+map <leader>goc <Action>(GithubCopyPathProvider)
+let g:WhichKeyDesc_copy_remote = "<leader>goc copy remote"
+
 
 " Tabs
 let g:WhichKeyDesc_tabs = "<leader>b tabs"
