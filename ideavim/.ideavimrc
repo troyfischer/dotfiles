@@ -1,56 +1,117 @@
+" system clipboard
+set clipboard+=unnamed
 set scrolloff=10
 set visualbell
-set hlsearch
 set incsearch
+
+" which-key
+set which-key
+set timeoutlen=5000
+" vim surround
+set surround
+" smart joins
+set ideajoin
 
 let mapleader = " "
 
-map <leader>ee <Action>(RecentFiles)
+let g:WhichKeyDesc_find = "<leader>f find"
+map <leader>fr <Action>(RecentFiles)
+let g:WhichKeyDesc_find_recent = "<leader>fr find recent"
+map <leader>fe <Action>(SearchEverywhere)
+let g:WhichKeyDesc_find_everywhere = "<leader>fe find everywhere"
 
+let g:WhichKeyDesc_project = "<leader>p project"
 map <leader>po <Action>(ActivateProjectToolWindow)
+let g:WhichKeyDesc_project_window = "<leader>po project tool window"
 map <leader>pn <Action>(NextProjectWindow)
+let g:WhichKeyDesc_project_next = "<leader>pn project next"
 map <leader>pp <Action>(PreviousProjectWindow)
+let g:WhichKeyDesc_project_previous = "<leader>pp project previous"
 
 map <leader>zz <Action>(HideAllWindows)
+let g:WhichKeyDesc_focus_code = "<leader>zz focus code windows"
 
+" Splits
+let g:WhichKeyDesc_windows = "<leader>w windows"
 map <leader>wv <Action>(SplitVertically)
+let g:WhichKeyDesc_split_vertically = "<leader>wv split vertically"
 map <leader>ws <Action>(SplitHorizontally)
+let g:WhichKeyDesc_split_horizontally = "<leader>ws split horizontally"
 map <leader>wu <Action>(Unsplit)
+let g:WhichKeyDesc_unsplit = "<leader>wu unsplit"
 
-map <leader>fa <Action>(GotoAction)
+map <leader>wj <C-w>j
+let g:WhichKeyDesc_window_down = "<leader>wj down"
+map <leader>wk <C-w>k
+let g:WhichKeyDesc_window_up = "<leader>wk up"
+map <leader>wl <C-w>l
+let g:WhichKeyDesc_window_left = "<leader>wl left"
+map <leader>wh <C-w>h
+let g:WhichKeyDesc_window_right = "<leader>wh right"
 
+" Code
+let g:WhichKeyDesc_code = "<leader>c code"
 map <leader>co <Action>(OptimizeImports)
+let g:WhichKeyDesc_optimize_imports = "<leader>co optimize imports"
+map <leader>cd <Action>(GotoDeclaration)
+let g:WhichKeyDesc_go_to_declaration = "<leader>cd go to declaration"
 
+" Folding
+let g:WhichKeyDesc_folding = "<leader>z folding"
 map <leader>zc <Action>(CollapseRegion)
+let g:WhichKeyDesc_collapse_region = "<leader>zc collapse region"
 map <leader>zC <Action>(CollapseAllRegions)
+let g:WhichKeyDesc_collapse_all = "<leader>zC collapse all"
 map <leader>ze <Action>(ExpandRegionRecursively)
+let g:WhichKeyDesc_expand_recursively = "<leader>ze expand recursively"
 map <leader>zE <Action>(ExpandAllRegions)
+let g:WhichKeyDesc_expand_all = "<leader>zE expand all"
 
 " Git
-map <leader>gg <Action>(ActivateCommitToolWindow)
+let g:WhichKeyDesc_git = "<leader>g git"
+map <leader>gg <Action>(Tool_External Tools_Magit)
+let g:WhichKeyDesc_magit = "<leader>gg open magit buffer"
 map <leader>gv <Action>(ActivateVersionControlToolWindow)
-map <leader>gd <Action>(GotoDeclaration)
+let g:WhichKeyDesc_version_control_window = "<leader>gv version control window"
+map <leader>go <Action>(uk.co.ben_gibson.git.link.ui.actions.menu.BrowserAction)
+
+" Tabs
+let g:WhichKeyDesc_tabs = "<leader>b tabs"
+map <leader>bp <Action>(PreviousTab)
+let g:WhichKeyDesc_previous_tab = "<leader>bp previous tab"
+map <leader>bn <Action>(NextTab)
+let g:WhichKeyDesc_next_tab = "<leader>bn next tab"
+map <leader>bk <Action>(CloseContent)
+let g:WhichKeyDesc_close_tab = "<leader>bk close tab"
+
 
 " Debug
+let g:WhichKeyDesc_debug = "<leader>d debug"
 map <leader>dd <Action>(Debug)
+let g:WhichKeyDesc_start_debug = "<leader>dd start debugger"
 map <leader>db <Action>(ToggleLineBreakpoint)
+let g:WhichKeyDesc_toggle_breakpoint = "<leader>db toggle breakpoint"
 map <leader>ds <Action>(Stop)
+let g:WhichKeyDesc_stop_debugger = "<leader>ds stop debugger"
 map <leader>dn <Action>(StepOver)
+let g:WhichKeyDesc_step_over = "<leader>dn step over"
 map <leader>di <Action>(StepInto)
+let g:WhichKeyDesc_step_into = "<leader>di step into"
 map <leader>do <Action>(StepOut)
+let g:WhichKeyDesc_step_out = "<leader>do step out"
 map <leader>dm <Action>(XDebugger.MuteBreakpoints)
+let g:WhichKeyDesc_mute_breakpoints = "<leader>dm mute breakpoints"
 map <leader>dr <Action>(Resume)
+let g:WhichKeyDesc_resume_debug = "<leader>dr resume"
 
-
+" Terminal
+let g:WhichKeyDesc_terminal = "<leader>t terminal"
 map <leader>tt <Action>(ActivateTerminalToolWindow)
+let g:WhichKeyDesc_activate_terminal = "<leader>tt activate"
 map <leader>tn <Action>(TerminalNewSession)
+let g:WhichKeyDesc_new_terminal = "<leader>tn new terminal"
 
 map <leader>vr <Action>(IdeaVim.ReloadVimRc.reload)
 
 map <leader>h :noh<CR>
 
-
-" Find more examples here: https://jb.gg/share-ideavimrc
-
-set surround
-set ideajoin
