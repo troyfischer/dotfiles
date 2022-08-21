@@ -4,6 +4,8 @@ set scrolloff=10
 set visualbell
 set incsearch
 
+" NERDTree
+set NERDTree
 " which-key
 set which-key
 set timeoutlen=5000
@@ -12,14 +14,22 @@ set surround
 " smart joins
 set ideajoin
 
+" Misc
+map <leader>vr <Action>(IdeaVim.ReloadVimRc.reload)
+map <leader>h :noh<CR>
+
 let mapleader = " "
 
+" Find
 let g:WhichKeyDesc_find = "<leader>f find"
 map <leader>fr <Action>(RecentFiles)
 let g:WhichKeyDesc_find_recent = "<leader>fr find recent"
 map <leader>fe <Action>(SearchEverywhere)
 let g:WhichKeyDesc_find_everywhere = "<leader>fe find everywhere"
+map <leader>fl <Action>(RecentLocations)
+let g:WhichKeyDesc_find_recent_locations = "<leader>fl find recent locations"
 
+" Project
 let g:WhichKeyDesc_project = "<leader>p project"
 map <leader>po <Action>(ActivateProjectToolWindow)
 let g:WhichKeyDesc_project_window = "<leader>po project tool window"
@@ -27,9 +37,6 @@ map <leader>pn <Action>(NextProjectWindow)
 let g:WhichKeyDesc_project_next = "<leader>pn project next"
 map <leader>pp <Action>(PreviousProjectWindow)
 let g:WhichKeyDesc_project_previous = "<leader>pp project previous"
-
-map <leader>zz <Action>(HideAllWindows)
-let g:WhichKeyDesc_focus_code = "<leader>zz focus code windows"
 
 " Splits
 let g:WhichKeyDesc_windows = "<leader>w windows"
@@ -39,7 +46,6 @@ map <leader>ws <Action>(SplitHorizontally)
 let g:WhichKeyDesc_split_horizontally = "<leader>ws split horizontally"
 map <leader>wu <Action>(Unsplit)
 let g:WhichKeyDesc_unsplit = "<leader>wu unsplit"
-
 map <leader>wj <C-w>j
 let g:WhichKeyDesc_window_down = "<leader>wj down"
 map <leader>wk <C-w>k
@@ -55,6 +61,8 @@ map <leader>co <Action>(OptimizeImports)
 let g:WhichKeyDesc_optimize_imports = "<leader>co optimize imports"
 map <leader>cd <Action>(GotoDeclaration)
 let g:WhichKeyDesc_go_to_declaration = "<leader>cd go to declaration"
+map <leader>cf <Action>(HideAllWindows)
+let g:WhichKeyDesc_focus_code = "<leader>cf focus code windows"
 
 " Folding
 let g:WhichKeyDesc_folding = "<leader>z folding"
@@ -84,7 +92,6 @@ let g:WhichKeyDesc_next_tab = "<leader>bn next tab"
 map <leader>bk <Action>(CloseContent)
 let g:WhichKeyDesc_close_tab = "<leader>bk close tab"
 
-
 " Debug
 let g:WhichKeyDesc_debug = "<leader>d debug"
 map <leader>dd <Action>(Debug)
@@ -104,6 +111,13 @@ let g:WhichKeyDesc_mute_breakpoints = "<leader>dm mute breakpoints"
 map <leader>dr <Action>(Resume)
 let g:WhichKeyDesc_resume_debug = "<leader>dr resume"
 
+" Run
+let g:WhichKeyDesc_run = "<leader>r run"
+map <leader>rc <Action>(RunClass)
+let g:WhichKeyDesc_run_class = "<leader>rc run class"
+map <leader>rd <Action>(DebugClass)
+let g:WhichKeyDesc_debug_class = "<leader>rd debug class"
+
 " Terminal
 let g:WhichKeyDesc_terminal = "<leader>t terminal"
 map <leader>tt <Action>(ActivateTerminalToolWindow)
@@ -111,7 +125,7 @@ let g:WhichKeyDesc_activate_terminal = "<leader>tt activate"
 map <leader>tn <Action>(TerminalNewSession)
 let g:WhichKeyDesc_new_terminal = "<leader>tn new terminal"
 
-map <leader>vr <Action>(IdeaVim.ReloadVimRc.reload)
-
-map <leader>h :noh<CR>
-
+" Open
+let g:WhichKeyDesc_open = "<leader>o open"
+map <leader>of <Action>(OpenFile)
+let g:WhichKeyDesc_open_file = "<leader>of open file"
