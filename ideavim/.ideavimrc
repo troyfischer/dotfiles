@@ -1,0 +1,56 @@
+set scrolloff=10
+set visualbell
+set hlsearch
+set incsearch
+
+let mapleader = " "
+
+map <leader>ee <Action>(RecentFiles)
+
+map <leader>po <Action>(ActivateProjectToolWindow)
+map <leader>pn <Action>(NextProjectWindow)
+map <leader>pp <Action>(PreviousProjectWindow)
+
+map <leader>zz <Action>(HideAllWindows)
+
+map <leader>wv <Action>(SplitVertically)
+map <leader>ws <Action>(SplitHorizontally)
+map <leader>wu <Action>(Unsplit)
+
+map <leader>fa <Action>(GotoAction)
+
+map <leader>co <Action>(OptimizeImports)
+
+map <leader>zc <Action>(CollapseRegion)
+map <leader>zC <Action>(CollapseAllRegions)
+map <leader>ze <Action>(ExpandRegionRecursively)
+map <leader>zE <Action>(ExpandAllRegions)
+
+" Git
+map <leader>gg <Action>(ActivateCommitToolWindow)
+map <leader>gv <Action>(ActivateVersionControlToolWindow)
+map <leader>gd <Action>(GotoDeclaration)
+
+" Debug
+map <leader>dd <Action>(Debug)
+map <leader>db <Action>(ToggleLineBreakpoint)
+map <leader>ds <Action>(Stop)
+map <leader>dn <Action>(StepOver)
+map <leader>di <Action>(StepInto)
+map <leader>do <Action>(StepOut)
+map <leader>dm <Action>(XDebugger.MuteBreakpoints)
+map <leader>dr <Action>(Resume)
+
+
+map <leader>tt <Action>(ActivateTerminalToolWindow)
+map <leader>tn <Action>(TerminalNewSession)
+
+map <leader>vr <Action>(IdeaVim.ReloadVimRc.reload)
+
+map <leader>h :noh<CR>
+
+
+" Find more examples here: https://jb.gg/share-ideavimrc
+
+set surround
+set ideajoin
