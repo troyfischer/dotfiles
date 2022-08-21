@@ -1,5 +1,6 @@
 #!/bin/sh
 
+stow executables
 stow emacs
 stow kitty
 stow karabiner
