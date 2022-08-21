@@ -65,3 +65,6 @@
 
 ;; sqlformat
 (package! sqlformat)
+
+;; https://github.com/catppuccin/catppuccin theme
+(package! catppuccin-theme)

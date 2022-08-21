@@ -11,7 +11,7 @@ Do I need this? Not sure tbh.
 (setq user-full-name "Troy Fischer"
       user-mail-address "troytfischer@gmail.com"
       display-line-numbers-type t
-      doom-theme 'doom-one
+      doom-theme 'catppuccin
       password-cache-expiry nil   ;; only type password once
       delete-by-moving-to-trash t ;; move files to trash instead of perma deletion
       doom-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size 15)
