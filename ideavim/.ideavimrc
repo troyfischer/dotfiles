@@ -91,7 +91,6 @@ let g:WhichKeyDesc_open_remote = "<leader>goo open remote"
 map <leader>goc <Action>(GithubCopyPathProvider)
 let g:WhichKeyDesc_copy_remote = "<leader>goc copy remote"
 
-
 " Tabs
 let g:WhichKeyDesc_tabs = "<leader>b tabs"
 map <leader>bp <Action>(PreviousTab)
@@ -105,6 +104,8 @@ let g:WhichKeyDesc_close_tab = "<leader>bk close tab"
 let g:WhichKeyDesc_debug = "<leader>d debug"
 map <leader>dd <Action>(Debug)
 let g:WhichKeyDesc_start_debug = "<leader>dd start debugger"
+map <leader>dc <Action>(DebugClass)
+let g:WhichKeyDesc_debug_class = "<leader>dc debug class"
 map <leader>db <Action>(ToggleLineBreakpoint)
 let g:WhichKeyDesc_toggle_breakpoint = "<leader>db toggle breakpoint"
 map <leader>ds <Action>(Stop)
@@ -124,8 +125,6 @@ let g:WhichKeyDesc_resume_debug = "<leader>dr resume"
 let g:WhichKeyDesc_run = "<leader>r run"
 map <leader>rc <Action>(RunClass)
 let g:WhichKeyDesc_run_class = "<leader>rc run class"
-map <leader>rd <Action>(DebugClass)
-let g:WhichKeyDesc_debug_class = "<leader>rd debug class"
 
 " Terminal
 let g:WhichKeyDesc_terminal = "<leader>t terminal"
