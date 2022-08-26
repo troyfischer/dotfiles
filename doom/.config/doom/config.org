@@ -74,6 +74,10 @@ brew install --cask font-source-sans-pro
   :config
   (add-to-list 'auto-mode-alist '("\.feature$" . feature-mode)))
 #+end_src
+*** Format On Save
+#+begin_src emacs-lisp
+(add-hook 'python-mode-hook #'format-all-mode)
+#+end_src
 *** Jedi
 Jedi is working best so far. Install via:
 #+begin_src sh :tangle no
@@ -253,13 +257,28 @@ Potentially helpful hints.
 #+RESULTS:
 
 * Blog
+*NOTE* you need to copy the font awesome directory yourself. This saves a lot of time when exporting static assets.
 #+begin_src emacs-lisp
-(defvar blog-base-dir (expand-file-name "~/blog"))
 (setq org-publish-project-alist
-      (list
-       (list "blog"
-             :recursive t
-             :base-directory "~/blog"
-             :publishing-directory "./public"
-             :publishing-function 'org-html-publish-to-html)))
+      '(
+        ("blog-html"
+         :recursive t
+         :base-directory "~/blog/content"
+         :publishing-directory "~/blog/public"
+         :publishing-function org-html-publish-to-html
+         :with-toc t
+         :section-numbers nil
+         ;; :timestamp-file nil
+         )
+        ("blog-static"
+         :base-directory "~/blog/content/"
+         :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+         :publishing-directory "~/blog/public/"
+         :recursive t
+         :publishing-function org-publish-attachment
+         )
+        ("blog" :components ("blog-html" "blog-static"))))
+(defun +troy/publish-blog-remote ()
+  (interactive)
+  (async-shell-command "rsync -e ssh -uvrz ~/blog/public/ root@165.227.115.74:/var/www/html/"))
 #+end_src

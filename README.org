@@ -9,7 +9,18 @@ Organizing dotfiles in this repository for quick start up time on a fresh comput
 #+begin_src sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 #+end_src
-
+** Programs
+#+begin_src sh
+brew install pass pass-otp stow ripgrep fd
+brew install --cask brave-browser
+#+end_src
+** Fonts
+#+begin_src sh
+brew tap homebrew/cask-fonts
+brew install --cask font-fira-code
+brew install --cask font-jetbrains-mono
+brew install --cask font-source-sans-pro
+#+end_src
 * Issues
 ** Browserpass
 *** Linux
