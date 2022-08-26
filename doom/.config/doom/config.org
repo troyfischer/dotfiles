@@ -26,6 +26,20 @@
 #+begin_src emacs-lisp
 (setq +doom-dashboard-banner-file (expand-file-name "default-emacs.svg" doom-private-dir))  ;; use custom image as banner
 #+end_src
+* My Functions
+** Project root
+#+begin_src emacs-lisp
+(defun +troy/get-current-project-root ()
+  (expand-file-name (car (last (project-current)))))
+#+end_src
+** Pipenv
+#+begin_src emacs-lisp
+(defun +troy/get-pipenv-dir ()
+  (cd (+troy/get-current-project-root))
+  (shell-command-to-string "echo -n $(pipenv --venv -q)"))
+(defun +troy/set-pipenv-dir ()
+  (setq python-shell-virtualenv-root (+troy/get-pipenv-dir)))
+#+end_src
 * Dired
 #+begin_src emacs-lisp
 (use-package! dired-x
@@ -116,14 +130,10 @@ pip3 install -U debugpy ptvsd pytest behave
 #+end_src
 *** Set virtual env
 #+begin_src emacs-lisp
-(defun +troy/get-pipenv-dir ()
-  (shell-command-to-string "echo -n $(pipenv --venv -q)"))
-(defun +troy/set-pipenv-dir ()
-  (setq python-shell-virtualenv-root (+troy/get-pipenv-dir)))
-(+troy/set-pipenv-dir)
-;; (add-hook! 'python-mode-hook #'+troy/set-pipenv-dir)
+(add-hook! 'python-mode-hook #'+troy/set-pipenv-dir)
 #+end_src
-*** Dap Template
+*** Custom Dap Template
+Add behave configuration every time I open a python file. This could potentially be more accurate but works for now.
 #+begin_src emacs-lisp
 (defun +troy/add-behave-template ()
   (dap-register-debug-template
@@ -131,7 +141,7 @@ pip3 install -U debugpy ptvsd pytest behave
    (list :type "python"
          :args ""
          :cwd nil
-         :program (concat (expand-file-name (car (last (project-current)))) "tests/features")
+         :program (concat (+troy/get-current-project-root) "tests/features")
          :module "behave"
          :request "launch"
          :name "Python :: Run behave (buffer)")))
