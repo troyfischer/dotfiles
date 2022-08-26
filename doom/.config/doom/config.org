@@ -2,16 +2,12 @@
 #+author: Troy Fischer
 #+startup: fold
 
-Do I need this? Not sure tbh.
-#+begin_src emacs-lisp
-;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
-#+end_src
 * Basics
 #+begin_src emacs-lisp
 (setq user-full-name "Troy Fischer"
       user-mail-address "troytfischer@gmail.com"
       display-line-numbers-type t
-      doom-theme 'catppuccin
+      doom-theme 'doom-solarized-light
       password-cache-expiry nil   ;; only type password once
       delete-by-moving-to-trash t ;; move files to trash instead of perma deletion
       doom-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size 15)
@@ -51,12 +47,19 @@ Do I need this? Not sure tbh.
   (setq lsp-java-code-generation-hash-code-equals-use-java7objects t))
 #+end_src
 ** Python
+*** Feature Mode
+#+begin_src emacs-lisp
+(use-package! feature-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\.feature$" . feature-mode)))
+#+end_src
+*** Jedi
 Jedi is working best so far. Install via:
 #+begin_src sh :tangle no
 pip3 install -U jedi-language-server
 #+end_src
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package! lsp-jedi
   :ensure nil
   :config
@@ -65,14 +68,29 @@ pip3 install -U jedi-language-server
     (add-to-list 'lsp-enabled-clients 'jedi))
   (add-to-list 'lsp-jedi-python-library-directories "~/.local/share/virtualenvs"))
 #+end_src
+*** Pyright
+#+begin_src sh :tangle no
+pip3 install -U pyright
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package! lsp-pyright
+  :config
+  (setq lsp-pyright-venv-directory "~/.local/share/virtualenvs"))
+#+end_src
+*** Optimize Imports
+#+begin_src sh :tangle no
+pip3 install -U pyflakes isort
+#+end_src
 *** Debugging
 =debugpy= is recommended
 #+begin_src sh :tangle no
-pip3 install debugpy ptvsd --user
+pip3 install -U debugpy ptvsd pytest behave
 #+end_src
 
 #+begin_src emacs-lisp
 (after! dap-mode
+  (setq dap-python-executable "python3")
   (setq dap-python-debugger 'debugpy)
   (require 'dap-python))
 (defun refresh-breakpoints ()
@@ -90,6 +108,34 @@ pip3 install debugpy ptvsd --user
        (:prefix-map ("u" . "ui")
         :desc "dap-ui-breakpoints-list" "l" #'dap-ui-breakpoints-list
         :desc "dap-ui-breakpoints-delete" "d" #'dap-ui-breakpoints-delete)))
+#+end_src
+*** Add Pip executables to path
+#+begin_src emacs-lisp
+(let ((pip-path (concat (shell-command-to-string "echo -n $(python3 -m site --user-base)") "/bin")))
+  (add-to-list 'exec-path pip-path))
+#+end_src
+*** Set virtual env
+#+begin_src emacs-lisp
+(defun +troy/get-pipenv-dir ()
+  (shell-command-to-string "echo -n $(pipenv --venv -q)"))
+(defun +troy/set-pipenv-dir ()
+  (setq python-shell-virtualenv-root (+troy/get-pipenv-dir)))
+(+troy/set-pipenv-dir)
+;; (add-hook! 'python-mode-hook #'+troy/set-pipenv-dir)
+#+end_src
+*** Dap Template
+#+begin_src emacs-lisp
+(defun +troy/add-behave-template ()
+  (dap-register-debug-template
+   "Python :: Run behave (buffer)"
+   (list :type "python"
+         :args ""
+         :cwd nil
+         :program (concat (expand-file-name (car (last (project-current)))) "tests/features")
+         :module "behave"
+         :request "launch"
+         :name "Python :: Run behave (buffer)")))
+(add-hook! 'python-mode-hook #'+troy/add-behave-template)
 #+end_src
 * Org
 #+begin_src emacs-lisp
@@ -123,11 +169,18 @@ pip3 install debugpy ptvsd --user
 #+end_src
 * Password Store Keybindings
 #+begin_src emacs-lisp
+(defun +troy/password-store-dir ()
+  (find-file "~/.password-store"))
+(defun +troy/git-password-store ()
+  (interactive)
+  (+troy/password-store-dir)
+  (magit))
 (map! :leader
       (:prefix-map ("P" . "Passwords")
        :desc "password-store-copy" "c" #'password-store-copy
        :desc "password-store-edit" "e" #'password-store-edit
-       :desc "password-store-otp-token-copy" "o" #'password-store-otp-token-copy))
+       :desc "password-store-otp-token-copy" "o" #'password-store-otp-token-copy
+       :desc "password-store-git" "g" #'+troy/git-password-store))
 #+end_src
 * Projectile
 #+begin_src emacs-lisp
@@ -139,7 +192,10 @@ pip3 install debugpy ptvsd --user
 #+end_src
 * Vterm
 #+begin_src emacs-lisp
-(map! :map vterm-mode-map :i "C-y" #'vterm-yank) ;; provide paste in insert mode
+(use-package! vterm
+  :ensure nil
+  :config
+  (map! :map vterm-mode-map :i "C-y" #'vterm-yank))
 #+end_src
 * Z-Notes
 Potentially helpful hints.

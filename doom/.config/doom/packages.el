@@ -68,3 +68,9 @@
 
 ;; https://github.com/catppuccin/catppuccin theme
 (package! catppuccin-theme)
+
+;; elisp formatter
+(package! lispy)
+
+;; cucumber tests
+(package! feature-mode)
