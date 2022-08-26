@@ -10,7 +10,7 @@ alias vi=nvim
 alias v=nvim
 
 # Default programs:
-export EDITOR="nvim"
+export EDITOR="emacs"
 export BROWSER="brave"
 
 # ~/ Clean-up:
