@@ -10,9 +10,9 @@
       doom-theme 'doom-solarized-light
       password-cache-expiry nil   ;; only type password once
       delete-by-moving-to-trash t ;; move files to trash instead of perma deletion
-      doom-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size 15)
+      doom-font (font-spec :family "Fira Code" :size 15)
       doom-variable-pitch-font (font-spec :family "Source Sans Pro" :size 15)
-      doom-big-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size 24))
+      doom-big-font (font-spec :family "Fira Code" :size 24))
 
 ;; display time in modeline
 (setq display-time-format "%l:%M %p"
@@ -21,6 +21,13 @@
 
 ;; line numbers in all modes
 (global-display-line-numbers-mode)
+#+end_src
+** Install Fonts
+#+begin_src sh :tangle no
+brew tap homebrew/cask-fonts
+brew install --cask font-fira-code
+brew install --cask font-jetbrains-mono
+brew install --cask font-source-sans-pro
 #+end_src
 * Dashboard
 #+begin_src emacs-lisp
@@ -148,12 +155,14 @@ Add behave configuration every time I open a python file. This could potentially
 (add-hook! 'python-mode-hook #'+troy/add-behave-template)
 #+end_src
 * Org
+** Config
 #+begin_src emacs-lisp
 (use-package! org
   :ensure nil
   :config
+  (defvar +troy/main-org-agenda-file (expand-file-name (concat org-directory "agenda.org")))
   (setq org-directory "~/org/"
-        org-agenda-files (list (concat org-directory "agenda.org"))
+        org-agenda-files (list +troy/main-org-agenda-file)
         org-default-notes-file (concat org-directory "notes.org")
         org-agenda-span 30
         org-hide-emphasis-markers t)
@@ -176,6 +185,19 @@ Add behave configuration every time I open a python file. This could potentially
          :publishing-directory "~/public_html/"
          :recursive t
          :publishing-function org-publish-attachment))))
+#+end_src
+
+#+RESULTS:
+: t
+
+** Agenda
+*** Keybinding to open agenda.org
+#+begin_src emacs-lisp
+(defun +troy/open-org-agenda ()
+  (interactive)
+  (find-file +troy/main-org-agenda-file))
+(map! :leader
+      :desc "Open agenda.org" "o a o" #'+troy/open-org-agenda)
 #+end_src
 * Password Store Keybindings
 #+begin_src emacs-lisp
@@ -226,4 +248,18 @@ Potentially helpful hints.
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+#+end_src
+
+#+RESULTS:
+
+* Blog
+#+begin_src emacs-lisp
+(defvar blog-base-dir (expand-file-name "~/blog"))
+(setq org-publish-project-alist
+      (list
+       (list "blog"
+             :recursive t
+             :base-directory "~/blog"
+             :publishing-directory "./public"
+             :publishing-function 'org-html-publish-to-html)))
 #+end_src
