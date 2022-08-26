@@ -4,12 +4,41 @@
 * Dotfiles
 Organizing dotfiles in this repository for quick start up time on a fresh computer. Using [[https://www.gnu.org/software/stow/][GNU Stow]] to create the symbolic links.
 
+* Mac
+** Install Homebrew
+#+begin_src sh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+#+end_src
+
 * Issues
-** Browser pass extension problems
+** Browserpass
+*** Linux
 I've had issues getting browserpass to work on some of my recent installs. Solved via this link [[https://github.com/browserpass/browserpass-extension/issues/158][github-fix]].
 
 Specifically this comment (may need modification depending on the browser in use):
 #+begin_src sh
 sudo mkdir -p /etc/opt/chrome/native-messaging-hosts/
 sudo ln -s /etc/chromium/native-messaging-hosts/com.github.browserpass.native.json  /etc/opt/chrome/native-messaging-hosts/com.github.browserpass.native.json
+#+end_src
+*** Mac
+**** Install
+[[https://github.com/browserpass/browserpass-extension][Browserpass Extension]]
+[[https://github.com/browserpass/browserpass-native
+][Browserpass Native]]
+**** Config
+Had to explicitly set a few things in [[file:~/.gnupg/][.gnupg]].
+
+In [[file:~/.gnupg/gpg.conf][gpg.conf]]
+#+begin_src conf
+use-agent
+#+end_src
+
+In [[file:~/.gnupg/gpg-agent.conf][gpg-agent.conf]]
+#+begin_src conf
+pinentry-program /usr/local/bin/pinentry-mac
+#+end_src
+
+To restart the gpg agent
+#+begin_src sh
+gpgconf --kill gpg-agent
 #+end_src
