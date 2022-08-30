@@ -22,13 +22,6 @@
 ;; line numbers in all modes
 (global-display-line-numbers-mode)
 #+end_src
-** Install Fonts
-#+begin_src sh :tangle no
-brew tap homebrew/cask-fonts
-brew install --cask font-fira-code
-brew install --cask font-jetbrains-mono
-brew install --cask font-source-sans-pro
-#+end_src
 * Dashboard
 #+begin_src emacs-lisp
 (setq +doom-dashboard-banner-file (expand-file-name "default-emacs.svg" doom-private-dir))  ;; use custom image as banner
@@ -164,7 +157,7 @@ Add behave configuration every time I open a python file. This could potentially
 (use-package! org
   :ensure nil
   :config
-  (defvar +troy/main-org-agenda-file (expand-file-name (concat org-directory "agenda.org")))
+  (defvar +troy/main-org-agenda-file (expand-file-name (concat org-directory "/agenda.org")))
   (setq org-directory "~/org/"
         org-agenda-files (list +troy/main-org-agenda-file)
         org-default-notes-file (concat org-directory "notes.org")
@@ -172,28 +165,8 @@ Add behave configuration every time I open a python file. This could potentially
         org-hide-emphasis-markers t)
   (add-to-list 'org-refile-targets '(org-default-notes-file :maxlevel . 3))
   ;; disable org mode auto complete suggestions
-  (add-hook! 'org-mode-hook #'(lambda () (company-mode -1)))
-  ;; org blog
-  (setq org-publish-project-alist
-      '(("blog-html"
-         :base-directory "~/dev/blog/"
-         :base-extension "org"
-         :publishing-directory "~/public_html/"
-         :recursive t
-         :publishing-function org-html-publish-to-html
-         :headline-levels 4
-         :auto-preamble t)
-        ("blog-static"
-         :base-directory "~/dev/blog/"
-         :base-extension "ttf\\|woff2\\|scss\\|svg\\|css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-         :publishing-directory "~/public_html/"
-         :recursive t
-         :publishing-function org-publish-attachment))))
+  (add-hook! 'org-mode-hook #'(lambda () (company-mode -1))))
 #+end_src
-
-#+RESULTS:
-: t
-
 ** Agenda
 *** Keybinding to open agenda.org
 #+begin_src emacs-lisp
@@ -266,9 +239,7 @@ Potentially helpful hints.
          :base-directory "~/blog/content"
          :publishing-directory "~/blog/public"
          :publishing-function org-html-publish-to-html
-         :with-toc t
          :section-numbers nil
-         ;; :timestamp-file nil
          )
         ("blog-static"
          :base-directory "~/blog/content/"
@@ -282,3 +253,9 @@ Potentially helpful hints.
   (interactive)
   (async-shell-command "rsync -e ssh -uvrz ~/blog/public/ root@165.227.115.74:/var/www/html/"))
 #+end_src
+** Note on table of contents
+#+begin_quote
+Org normally inserts the table of contents directly before the first headline of the file. To move the table of contents to a different location, first turn off the default with org-export-with-toc variable or with ‘#+OPTIONS: toc:nil’. Then insert ‘#+TOC: headlines N’ at the desired location(s).
+#+end_quote
+
+[[https://orgmode.org/manual/Table-of-Contents.html][Org TOC manual]]

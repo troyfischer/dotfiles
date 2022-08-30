@@ -11,7 +11,7 @@ Organizing dotfiles in this repository for quick start up time on a fresh comput
 #+end_src
 ** Programs
 #+begin_src sh
-brew install pass pass-otp stow ripgrep fd
+brew install pass pass-otp stow ripgrep fd emacs-mac sassc
 brew install --cask brave-browser
 #+end_src
 ** Fonts
