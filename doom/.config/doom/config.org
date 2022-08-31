@@ -52,6 +52,7 @@
 * Evil
 #+begin_src emacs-lisp
 (setq evil-kill-on-visual-paste nil) ;; pasting in visual state does not add replaced text to kill ring
+(map! :i "C-y" #'yank) ;; paste in insert using C-y
 #+end_src
 * Lsp
 ** Java
