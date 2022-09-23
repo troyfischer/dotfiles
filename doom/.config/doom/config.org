@@ -11,16 +11,32 @@
       password-cache-expiry nil   ;; only type password once
       delete-by-moving-to-trash t ;; move files to trash instead of perma deletion
       doom-font (font-spec :family "Fira Code" :size 15)
-      doom-variable-pitch-font (font-spec :family "Source Sans Pro" :size 15)
+      doom-variable-pitch-font (font-spec :family "Overpass" :size 15)
       doom-big-font (font-spec :family "Fira Code" :size 24))
 
 ;; display time in modeline
-(setq display-time-format "%l:%M %p"
+(setq display-time-format "%m-%d-%y %l:%M %p"
       display-time-default-load-average nil)
 (display-time-mode)
 
 ;; line numbers in all modes
 (global-display-line-numbers-mode)
+
+;; underline current cursor line
+(defun +troy/set-underline ()
+  (global-hl-line-mode 1)
+  (setq doom--hl-line-mode t)
+  (set-face-attribute hl-line-face nil :underline t)
+  (set-face-background 'hl-line nil)
+  (set-face-underline 'hl-line t)
+  (set-face-attribute 'hl-line nil :inherit nil))
+(defun +troy/load-theme ()
+  (interactive)
+  (call-interactively 'consult-theme)
+  (+troy/set-underline))
+(map! :leader :desc "load-theme" "h t" #'+troy/load-theme)
+(+troy/set-underline)
+(add-hook! (prog-mode text-mode conf-mode special-mode feature-mode) #'hl-line-mode)
 #+end_src
 * Dashboard
 #+begin_src emacs-lisp
@@ -205,7 +221,10 @@ Add behave configuration every time I open a python file. This could potentially
 (use-package! vterm
   :ensure nil
   :config
-  (map! :map vterm-mode-map :i "C-y" #'vterm-yank))
+  (map! :map vterm-mode-map
+        :i "C-y" #'vterm-yank
+        :i "C-k" #'vterm-send-up
+        :i "C-j" #'vterm-send-down))
 #+end_src
 * Z-Notes
 Potentially helpful hints.
@@ -233,6 +252,7 @@ Potentially helpful hints.
 * Blog
 *NOTE* you need to copy the font awesome directory yourself. This saves a lot of time when exporting static assets.
 #+begin_src emacs-lisp
+(setq org-html-head-include-default-style nil)
 (setq org-publish-project-alist
       '(
         ("blog-html"
@@ -241,6 +261,7 @@ Potentially helpful hints.
          :publishing-directory "~/blog/public"
          :publishing-function org-html-publish-to-html
          :section-numbers nil
+
          )
         ("blog-static"
          :base-directory "~/blog/content/"
@@ -252,7 +273,7 @@ Potentially helpful hints.
         ("blog" :components ("blog-html" "blog-static"))))
 (defun +troy/publish-blog-remote ()
   (interactive)
-  (async-shell-command "rsync -e ssh -uvrz ~/blog/public/ root@165.227.115.74:/var/www/html/"))
+  (async-shell-command "rsync -e ssh -uvrz ~/blog/public/ root@165.227.115.74:/var/www/html/ --delete"))
 #+end_src
 ** Note on table of contents
 #+begin_quote
@@ -260,3 +281,38 @@ Org normally inserts the table of contents directly before the first headline of
 #+end_quote
 
 [[https://orgmode.org/manual/Table-of-Contents.html][Org TOC manual]]
+* Proxies
+#+begin_src emacs-lisp :tangle no
+;; (setq url-proxy-services '(("http" . "someproxy.proxy.hostname.com:port")
+;;                            ("https" . "someproxy.proxy.hostname.com:port")))
+#+end_src
+* Auth Sources
+#+begin_src emacs-lisp
+(setq auth-sources '("~/.authinfo.gpg"))
+#+end_src
+* Forge
+** Corporate Examples
+#+begin_src emacs-lisp :tangle no
+;; (with-eval-after-load 'forge (add-to-list 'forge-alist '("github.cloud.company.com" "github.cloud.company.com/api/v3" "github.cloud.company.com" forge-github-repository)))
+;; (with-eval-after-load 'browse-at-remote (add-to-list 'browse-at-remote-remote-type-regexps '("^github\\.cloud\\.company\\.com$" . "github")))
+#+end_src
+* Code Review
+Config: [[https://github.com/wandersoncferreira/code-review]]
+#+begin_src emacs-lisp
+(setq code-review-auth-login-marker 'forge)
+(add-hook 'code-review-mode-hook #'emojify-mode)
+(add-hook 'code-review-mode-hook
+          (lambda ()
+            ;; include *Code-Review* buffer into current workspace
+            (persp-add-buffer (current-buffer))))
+#+end_src
+** Corporate Examples
+#+begin_src emacs-lisp :tangle no
+;; (setq code-review-github-host "github.cloud.company.com/api/v3"
+;;       code-review-github-base-url "github.cloud.company.com"
+;;       code-review-github-graphql-host "github.cloud.company.com/api")
+#+end_src
+* org-core-fold-region missing spec bug fix
+#+begin_src emacs-lisp
+(setq org-fold-core-style 'overlay)
+#+end_src

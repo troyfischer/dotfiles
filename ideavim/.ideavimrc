@@ -1,6 +1,6 @@
 " system clipboard
 set clipboard+=unnamed
-set scrolloff=10
+set scrolloff=5
 set visualbell
 set incsearch
 
@@ -45,8 +45,8 @@ map <leader>wv <Action>(SplitVertically)
 let g:WhichKeyDesc_split_vertically = "<leader>wv split vertically"
 map <leader>ws <Action>(SplitHorizontally)
 let g:WhichKeyDesc_split_horizontally = "<leader>ws split horizontally"
-map <leader>wu <Action>(Unsplit)
-let g:WhichKeyDesc_unsplit = "<leader>wu unsplit"
+map <leader>wd <Action>(Unsplit)
+let g:WhichKeyDesc_delete = "<leader>wd delete"
 map <leader>wj <C-w>j
 let g:WhichKeyDesc_window_down = "<leader>wj down"
 map <leader>wk <C-w>k

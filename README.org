@@ -11,15 +11,13 @@ Organizing dotfiles in this repository for quick start up time on a fresh comput
 #+end_src
 ** Programs
 #+begin_src sh
-brew install pass pass-otp stow ripgrep fd emacs-mac sassc
+brew install pass pass-otp stow ripgrep fd emacs-mac sassc mactex pandoc
 brew install --cask brave-browser
 #+end_src
 ** Fonts
 #+begin_src sh
 brew tap homebrew/cask-fonts
-brew install --cask font-fira-code
-brew install --cask font-jetbrains-mono
-brew install --cask font-source-sans-pro
+brew install --cask font-fira-code font-jetbrains-mono font-overpass
 #+end_src
 * Issues
 ** Browserpass
