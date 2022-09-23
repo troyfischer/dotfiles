@@ -54,7 +54,25 @@
   (cd (+troy/get-current-project-root))
   (shell-command-to-string "echo -n $(pipenv --venv -q)"))
 (defun +troy/set-pipenv-dir ()
+  (interactive)
   (setq python-shell-virtualenv-root (+troy/get-pipenv-dir)))
+
+(setq pipenv-with-projectile nil)
+
+(defun +troy/pipenv-activate-setup ()
+  (pipenv-deactivate)
+  (+troy/set-pipenv-dir)
+  (pipenv-activate))
+
+(defun +troy/get-virtual-env-exists ()
+  (not (string-match-p "No virtualenv" (+troy/get-pipenv-dir))))
+
+(defun +troy/projectile-pipenv-hook ()
+  (let ((pipfile-exists (file-exists-p (concat (projectile-project-root) "Pipfile"))))
+    (if (and pipfile-exists (+troy/get-virtual-env-exists))
+        (+troy/pipenv-activate-setup) (pipenv-deactivate))))
+
+(add-hook! 'projectile-after-switch-project-hook #'+troy/projectile-pipenv-hook)
 #+end_src
 * Dired
 #+begin_src emacs-lisp
