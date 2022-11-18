@@ -38,6 +38,12 @@ map <leader>pn <Action>(NextProjectWindow)
 let g:WhichKeyDesc_project_next = "<leader>pn project next"
 map <leader>pp <Action>(PreviousProjectWindow)
 let g:WhichKeyDesc_project_previous = "<leader>pp project previous"
+map <leader>pf <Action>(SearchEverywhere)
+let g:WhichKeyDesc_project_find_file = "<leader>pf find file"
+map <leader>pr <Action>(SearchEverywhere)
+let g:WhichKeyDesc_project_find_recent = "<leader>pr find recent"
+map <leader>pl <Action>(RecentLocations)
+let g:WhichKeyDesc_find_recent_locations = "<leader>pl find recent locations"
 
 " Splits
 let g:WhichKeyDesc_windows = "<leader>w windows"
@@ -52,9 +58,9 @@ let g:WhichKeyDesc_window_down = "<leader>wj down"
 map <leader>wk <C-w>k
 let g:WhichKeyDesc_window_up = "<leader>wk up"
 map <leader>wl <C-w>l
-let g:WhichKeyDesc_window_left = "<leader>wl left"
+let g:WhichKeyDesc_window_right = "<leader>wl right"
 map <leader>wh <C-w>h
-let g:WhichKeyDesc_window_right = "<leader>wh right"
+let g:WhichKeyDesc_window_left = "<leader>wh left"
 map <leader>wm <Action>(HideAllWindows)
 let g:WhichKeyDesc_focus_code = "<leader>wm focus code windows"
 
@@ -88,6 +94,7 @@ let g:WhichKeyDesc_version_control_window = "<leader>gv version control window"
 let g:WhichKeyDesc_git_remote = "<leader>go git remote"
 map <leader>goo <Action>(Github.Open.In.Browser)
 let g:WhichKeyDesc_open_remote = "<leader>goo open remote"
+
 map <leader>goc <Action>(GithubCopyPathProvider)
 let g:WhichKeyDesc_copy_remote = "<leader>goc copy remote"
 
@@ -126,14 +133,11 @@ let g:WhichKeyDesc_run = "<leader>r run"
 map <leader>rc <Action>(RunClass)
 let g:WhichKeyDesc_run_class = "<leader>rc run class"
 
-" Terminal
-let g:WhichKeyDesc_terminal = "<leader>t terminal"
-map <leader>tt <Action>(ActivateTerminalToolWindow)
-let g:WhichKeyDesc_activate_terminal = "<leader>tt activate"
-map <leader>tn <Action>(TerminalNewSession)
-let g:WhichKeyDesc_new_terminal = "<leader>tn new terminal"
-
 " Open
 let g:WhichKeyDesc_open = "<leader>o open"
 map <leader>of <Action>(OpenFile)
 let g:WhichKeyDesc_open_file = "<leader>of open file"
+map <leader>ot <Action>(ActivateTerminalToolWindow)
+let g:WhichKeyDesc_activate_terminal = "<leader>ot activate"
+map <leader>oT <Action>(TerminalNewSession)
+let g:WhichKeyDesc_new_terminal = "<leader>oT new terminal"

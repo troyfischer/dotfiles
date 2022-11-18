@@ -74,6 +74,13 @@
 
 (add-hook! 'projectile-after-switch-project-hook #'+troy/projectile-pipenv-hook)
 #+end_src
+** Open Pycharm from current project
+#+begin_src elisp
+(defun +troy/open-project-in-pycharm ()
+  (interactive)
+  (async-shell-command (format "open -na 'PyCharm CE.app' --args %s" (projectile-project-root)))
+  (doom/window-maximize-buffer))
+#+end_src
 * Dired
 #+begin_src emacs-lisp
 (use-package! dired-x
@@ -90,7 +97,7 @@
 #+end_src
 * Lsp
 ** Java
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package! lsp-java
   :config
   (setq lsp-java-code-generation-hash-code-equals-use-java7objects t))
@@ -122,11 +129,12 @@ pip3 install -U jedi-language-server
   (add-to-list 'lsp-jedi-python-library-directories "~/.local/share/virtualenvs"))
 #+end_src
 *** Pyright
+Pyright likes to scan way too many projects and results in too many open files errors on macOS. If using doom set ~lsp-pyright-multi-root~ to ~nil~ in =./modules/lang/python/config.el=.
 #+begin_src sh :tangle no
 pip3 install -U pyright
 #+end_src
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package! lsp-pyright
   :config
   (setq lsp-pyright-venv-directory "~/.local/share/virtualenvs"))
@@ -141,7 +149,7 @@ pip3 install -U pyflakes isort
 pip3 install -U debugpy ptvsd pytest behave
 #+end_src
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (after! dap-mode
   (setq dap-python-executable "python3")
   (setq dap-python-debugger 'debugpy)
@@ -168,12 +176,12 @@ pip3 install -U debugpy ptvsd pytest behave
   (add-to-list 'exec-path pip-path))
 #+end_src
 *** Set virtual env
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (add-hook! 'python-mode-hook #'+troy/set-pipenv-dir)
 #+end_src
 *** Custom Dap Template
 Add behave configuration every time I open a python file. This could potentially be more accurate but works for now.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (defun +troy/add-behave-template ()
   (dap-register-debug-template
    "Python :: Run behave (buffer)"
@@ -229,6 +237,7 @@ Add behave configuration every time I open a python file. This could potentially
 * Projectile
 #+begin_src emacs-lisp
 (map! :leader :desc "ripgrep" "p G" #'projectile-ripgrep)
+(map! :leader :desc "PyCharm" "p P" #'+troy/open-project-in-pycharm)
 #+end_src
 * Vertico
 #+begin_src emacs-lisp
@@ -264,9 +273,6 @@ Potentially helpful hints.
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 #+end_src
-
-#+RESULTS:
-
 * Blog
 *NOTE* you need to copy the font awesome directory yourself. This saves a lot of time when exporting static assets.
 #+begin_src emacs-lisp
