@@ -140,6 +140,8 @@ every python project it initializes in. On MacOS this has given me trouble with
 ~too many open files~ issues. To prevent that I've set the variable to nil in [[file:~/.config/emacs/modules/lang/python/config.el::setq lsp-pyright-multi-root
 nil][.config/emacs/modules/lang/python/config.el]].
 
+After setting the variable delete the lsp-session file in =~/.config/emacs/.local/cache= (or delete the entire directory which will have other repercussions like needed to readd projects to projectile)
+
 #+begin_src sh :tangle no
 pip3 install -U pyright
 #+end_src
