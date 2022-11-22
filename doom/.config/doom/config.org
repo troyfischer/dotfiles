@@ -2,6 +2,9 @@
 #+author: Troy Fischer
 #+startup: fold
 
+* Useful Documentation
+** How to Rebind Keys!
++ [[https://discourse.doomemacs.org/t/how-to-re-bind-keys/56][hlissner documentation on key rebinding]]
 * Basics
 #+begin_src emacs-lisp
 (setq user-full-name "Troy Fischer"
@@ -140,7 +143,9 @@ every python project it initializes in. On MacOS this has given me trouble with
 ~too many open files~ issues. To prevent that I've set the variable to nil in [[file:~/.config/emacs/modules/lang/python/config.el::setq lsp-pyright-multi-root
 nil][.config/emacs/modules/lang/python/config.el]].
 
-After setting the variable delete the lsp-session file in =~/.config/emacs/.local/cache= (or delete the entire directory which will have other repercussions like needed to readd projects to projectile)
+After setting the variable delete the lsp-session file in
+[[file:~/.config/emacs/.local/cache/]] (or delete the entire directory which will have
+other repercussions like needing to re-add projects to projectile)
 
 #+begin_src sh :tangle no
 pip3 install -U pyright
@@ -347,4 +352,11 @@ Config: [[https://github.com/wandersoncferreira/code-review]]
 ;; (setq code-review-github-host "github.cloud.company.com/api/v3"
 ;;       code-review-github-base-url "github.cloud.company.com"
 ;;       code-review-github-graphql-host "github.cloud.company.com/api")
+#+end_src
+* Swiper
+#+begin_src emacs-lisp
+(map! "C-s" #'swiper-isearch)
+(map! :map ivy-minibuffer-map
+      "C-j" #'ivy-next-line
+      "C-k" #'ivy-previous-line)
 #+end_src
