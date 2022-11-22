@@ -19,6 +19,24 @@ brew install --cask brave-browser
 brew tap homebrew/cask-fonts
 brew install --cask font-fira-code font-jetbrains-mono font-overpass
 #+end_src
+** Doom Emacs
+[[https://github.com/doomemacs/doomemacs][Install Doom Emacs]]
+#+begin_src sh
+git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
+#+end_src
+
+Assuming my dotfiles have added ~/.config/emacs/bin to the PATH.
+#+begin_src sh
+doom install
+#+end_src
+* Chrome Extensions
++ [[https://chrome.google.com/webstore/detail/browserpass/naepdomgkenhinolocfifgehidddafch?hl=en][Browserpass]]
++ [[https://chrome.google.com/webstore/detail/df-tube-distraction-free/mjdepdfccjgcndkmemponafgioodelna?hl=en][Distraction Free Youtube]]
++ [[https://chrome.google.com/webstore/detail/youtube-playback-speed-co/hdannnflhlmdablckfkjpleikpphncik/reviews?hl=en][Youtube Speed Playback Control]]
++ [[https://chrome.google.com/webstore/detail/dark-reader/eimadpbcbfnmbkopoojfekhnkhdbieeh?hl=en-US][Dark Reader]]
++ [[https://chrome.google.com/webstore/detail/united-by-zero/cnicehoklaonpoobcjbagnmbchlacmpk][United By Zero]]
++ [[https://chrome.google.com/webstore/detail/tab-groups-extension/nplimhmoanghlebhdiboeellhgmgommi?hl=en#:~:text=Tab%20Groups%20Extension&text=Automatically%20group%20tabs%2C%20save%20tabs,tabs%20through%20custom%20matching%20rules.][Tab Groups]]
++ [[https://chrome.google.com/webstore/detail/tab-suspender/fiabciakcmgepblmdkmemdbbkilneeeh/related?hl=en][Tab Suspender]]
 * Issues
 ** Browserpass
 *** Linux
