@@ -96,6 +96,12 @@
 (map! :i "C-y" #'yank) ;; paste in insert using C-y
 #+end_src
 * Lsp
+** Breadcrumbs
+#+begin_src emacs-lisp
+(use-package! lsp-mode
+  :config
+  (setq lsp-headerline-breadcrumb-enable t))
+#+end_src
 ** Java
 #+begin_src emacs-lisp :tangle no
 (use-package! lsp-java
@@ -129,12 +135,16 @@ pip3 install -U jedi-language-server
   (add-to-list 'lsp-jedi-python-library-directories "~/.local/share/virtualenvs"))
 #+end_src
 *** Pyright
-Pyright likes to scan way too many projects and results in too many open files errors on macOS. If using doom set ~lsp-pyright-multi-root~ to ~nil~ in =./modules/lang/python/config.el=.
+When pyright has ~lsp-pyright-multi-root~ set to ~t~ it runs a single server for
+every python project it initializes in. On MacOS this has given me trouble with
+~too many open files~ issues. To prevent that I've set the variable to nil in [[file:~/.config/emacs/modules/lang/python/config.el::setq lsp-pyright-multi-root
+nil][.config/emacs/modules/lang/python/config.el]].
+
 #+begin_src sh :tangle no
 pip3 install -U pyright
 #+end_src
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package! lsp-pyright
   :config
   (setq lsp-pyright-venv-directory "~/.local/share/virtualenvs"))
@@ -149,7 +159,7 @@ pip3 install -U pyflakes isort
 pip3 install -U debugpy ptvsd pytest behave
 #+end_src
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (after! dap-mode
   (setq dap-python-executable "python3")
   (setq dap-python-debugger 'debugpy)
@@ -176,7 +186,7 @@ pip3 install -U debugpy ptvsd pytest behave
   (add-to-list 'exec-path pip-path))
 #+end_src
 *** Set virtual env
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (add-hook! 'python-mode-hook #'+troy/set-pipenv-dir)
 #+end_src
 *** Custom Dap Template
@@ -335,8 +345,4 @@ Config: [[https://github.com/wandersoncferreira/code-review]]
 ;; (setq code-review-github-host "github.cloud.company.com/api/v3"
 ;;       code-review-github-base-url "github.cloud.company.com"
 ;;       code-review-github-graphql-host "github.cloud.company.com/api")
-#+end_src
-* org-core-fold-region missing spec bug fix
-#+begin_src emacs-lisp
-(setq org-fold-core-style 'overlay)
 #+end_src
