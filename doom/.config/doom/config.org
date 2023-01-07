@@ -10,7 +10,7 @@
 (setq user-full-name "Troy Fischer"
       user-mail-address "troytfischer@gmail.com"
       display-line-numbers-type t
-      doom-theme 'doom-solarized-light
+      doom-theme 'doom-one
       password-cache-expiry nil   ;; only type password once
       delete-by-moving-to-trash t ;; move files to trash instead of perma deletion
       doom-font (font-spec :family "Fira Code" :size 15)
@@ -306,7 +306,7 @@ Potentially helpful hints.
          )
         ("blog-static"
          :base-directory "~/blog/content/"
-         :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+         :base-extension "css\\|js\\|png\\|jpg\\|jpeg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|ico"
          :publishing-directory "~/blog/public/"
          :recursive t
          :publishing-function org-publish-attachment
@@ -314,7 +314,7 @@ Potentially helpful hints.
         ("blog" :components ("blog-html" "blog-static"))))
 (defun +troy/publish-blog-remote ()
   (interactive)
-  (async-shell-command "rsync -e ssh -uvrz ~/blog/public/ root@165.227.115.74:/var/www/html/ --delete"))
+  (async-shell-command "rsync -e ssh -uvrz ~/blog/public/ root@165.227.115.74:/var/www/html/ --delete --chmod=Du=rwx,Dgo=rx,Fu=rw,Fog=r"))
 #+end_src
 ** Note on table of contents
 #+begin_quote
