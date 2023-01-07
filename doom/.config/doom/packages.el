@@ -74,3 +74,6 @@
 
 ;; cucumber tests
 (package! feature-mode)
+
+;; jira
+(package! org-jira)
