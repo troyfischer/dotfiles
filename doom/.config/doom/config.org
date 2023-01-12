@@ -377,6 +377,7 @@ Config: [[https://github.com/wandersoncferreira/code-review]]
 #+begin_src emacs-lisp :tangle no
 (use-package! org-jira
   :ensure nil
+  :defer t ;; breaking epg when not deferred
   :config
   (setq org-jira-done-states '("Closed" "Resolved" "Done" "Accepted"))
   (setq org-jira-working-dir (concat org-directory "jira"))
