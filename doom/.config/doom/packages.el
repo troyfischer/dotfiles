@@ -77,3 +77,6 @@
 
 ;; jira
 (package! org-jira)
+
+;; http in org mode
+(package! ob-http)

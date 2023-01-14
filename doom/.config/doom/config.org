@@ -389,75 +389,74 @@ Config: [[https://github.com/wandersoncferreira/code-review]]
   (setq org-jira-custom-jqls
         '(
           (:jql " project = Software AND Team = \"Software Devs\" AND Sprint in openSprints() AND resolution = unresolved ORDER BY Rank ASC "
-           :filename "current_sprint"))))
-#+end_src
-** Update Issue Description
-#+begin_src emacs-lisp :tangle no
-(defun +troy/org-jira-update-issue-details-no-reporter (issue-id filename &rest rest)
-  "Update the details of issue ISSUE-ID in FILENAME.  REST will contain optional input."
-  (ensure-on-issue-id-with-filename issue-id filename
-                                    ;; Set up a bunch of values from the org content
-                                    (let* ((org-issue-components (org-jira-get-issue-val-from-org 'components))
-                                           (org-issue-labels (org-jira-get-issue-val-from-org 'labels))
-                                           (org-issue-description (org-trim (org-jira-get-issue-val-from-org 'description)))
-                                           (org-issue-priority (org-jira-get-issue-val-from-org 'priority))
-                                           (org-issue-type (org-jira-get-issue-val-from-org 'type))
-                                           (org-issue-type-id (org-jira-get-issue-val-from-org 'type-id))
-                                           (org-issue-assignee (cl-getf rest :assignee (org-jira-get-issue-val-from-org 'assignee)))
-                                           (project (replace-regexp-in-string "-[0-9]+" "" issue-id))
-                                           (project-components (jiralib-get-components project)))
+           :filename "current_sprint")))
+  (defun +troy/org-jira-update-issue-details-no-reporter (issue-id filename &rest rest)
+    "Update the details of issue ISSUE-ID in FILENAME.  REST will contain optional input."
+    (ensure-on-issue-id-with-filename issue-id filename
+                                      ;; Set up a bunch of values from the org content
+                                      (let* ((org-issue-components (org-jira-get-issue-val-from-org 'components))
+                                             (org-issue-labels (org-jira-get-issue-val-from-org 'labels))
+                                             (org-issue-description (org-trim (org-jira-get-issue-val-from-org 'description)))
+                                             (org-issue-priority (org-jira-get-issue-val-from-org 'priority))
+                                             (org-issue-type (org-jira-get-issue-val-from-org 'type))
+                                             (org-issue-type-id (org-jira-get-issue-val-from-org 'type-id))
+                                             (org-issue-assignee (cl-getf rest :assignee (org-jira-get-issue-val-from-org 'assignee)))
+                                             (project (replace-regexp-in-string "-[0-9]+" "" issue-id))
+                                             (project-components (jiralib-get-components project)))
 
-                                      ;; Lets fire off a worklog update async with the main issue
-                                      ;; update, why not?  This is better to fire first, because it
-                                      ;; doesn't auto-refresh any areas, while the end of the main
-                                      ;; update does a callback that reloads the worklog entries (so,
-                                      ;; we hope that wont occur until after this successfully syncs
-                                      ;; up).  Only do this sync if the user defcustom defines it as such.
-                                      (when org-jira-worklog-sync-p
-                                        (org-jira-update-worklogs-from-org-clocks))
+                                        ;; Lets fire off a worklog update async with the main issue
+                                        ;; update, why not?  This is better to fire first, because it
+                                        ;; doesn't auto-refresh any areas, while the end of the main
+                                        ;; update does a callback that reloads the worklog entries (so,
+                                        ;; we hope that wont occur until after this successfully syncs
+                                        ;; up).  Only do this sync if the user defcustom defines it as such.
+                                        (when org-jira-worklog-sync-p
+                                          (org-jira-update-worklogs-from-org-clocks))
 
-                                      ;; Send the update to jira
-                                      (let ((update-fields
-                                             (list (cons
-                                                    'components
-                                                    (or (org-jira-build-components-list
-                                                         project-components
-                                                         org-issue-components) []))
-                                                   (cons 'description org-issue-description)
-                                                   )))
+                                        ;; Send the update to jira
+                                        (let ((update-fields
+                                               (list (cons
+                                                      'components
+                                                      (or (org-jira-build-components-list
+                                                           project-components
+                                                           org-issue-components) []))
+                                                     (cons 'description org-issue-description)
+                                                     )))
 
 
-                                        ;; If we enable duedate sync and we have a deadline present
-                                        (when (and org-jira-deadline-duedate-sync-p
-                                                   (org-jira-get-issue-val-from-org 'deadline))
-                                          (setq update-fields
-                                                (append update-fields
-                                                        (list (cons 'duedate (org-jira-get-issue-val-from-org 'deadline))))))
+                                          ;; If we enable duedate sync and we have a deadline present
+                                          (when (and org-jira-deadline-duedate-sync-p
+                                                     (org-jira-get-issue-val-from-org 'deadline))
+                                            (setq update-fields
+                                                  (append update-fields
+                                                          (list (cons 'duedate (org-jira-get-issue-val-from-org 'deadline))))))
 
-                                        ;; TODO: We need some way to handle things like assignee setting
-                                        ;; and refreshing the proper issue in the proper buffer/filename.
-                                        (jiralib-update-issue
-                                         issue-id
-                                         update-fields
-                                         ;; This callback occurs on success
-                                         (org-jira-with-callback
-                                           (message (format "Issue '%s' updated!" issue-id))
-                                           (jiralib-get-issue
-                                            issue-id
-                                            (org-jira-with-callback
+                                          ;; TODO: We need some way to handle things like assignee setting
+                                          ;; and refreshing the proper issue in the proper buffer/filename.
+                                          (jiralib-update-issue
+                                           issue-id
+                                           update-fields
+                                           ;; This callback occurs on success
+                                           (org-jira-with-callback
+                                            (message (format "Issue '%s' updated!" issue-id))
+                                            (jiralib-get-issue
+                                             issue-id
+                                             (org-jira-with-callback
                                               (org-jira-log "Update get issue for refresh callback hit.")
                                               (-> cb-data list org-jira-get-issues))))
-                                         ))
-                                      )))
+                                           ))
+                                        )))
 
 
-(defun +troy/org-jira-update-issue-description ()
-  (interactive)
-  (let ((issue-id (org-jira-parse-issue-id))
-        (filename (org-jira-parse-issue-filename)))
-    (if issue-id
-        (+troy/org-jira-update-issue-details-no-reporter issue-id filename)
-      (error "Not on an issue"))
+  (defun +troy/org-jira-update-issue-description ()
+    (interactive)
+    (let ((issue-id (org-jira-parse-issue-id))
+          (filename (org-jira-parse-issue-filename)))
+      (if issue-id
+          (+troy/org-jira-update-issue-details-no-reporter issue-id filename)
+        (error "Not on an issue"))
+      )
     )
+
   )
 #+end_src
