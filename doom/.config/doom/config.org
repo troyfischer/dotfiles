@@ -460,3 +460,12 @@ Config: [[https://github.com/wandersoncferreira/code-review]]
 
   )
 #+end_src
+* Open Links
+#+begin_src emacs-lisp
+(setq +troy/website-list '(("google" . "https://google.com") ("bing" . "https://bing.com")))
+
+(defun +troy/open-url ()
+  (interactive)
+  (let ((selection (completing-read "Open in browser:" (mapcar #'car +troy/website-list))))
+    (browse-url (cdr (assoc selection +troy/website-list)))))
+#+end_src
