@@ -469,3 +469,9 @@ Config: [[https://github.com/wandersoncferreira/code-review]]
   (let ((selection (completing-read "Open in browser:" (mapcar #'car +troy/website-list))))
     (browse-url (cdr (assoc selection +troy/website-list)))))
 #+end_src
+* Smooth Scroll
+Smooth scrolling provided in emacs 29!
+#+begin_src emacs-lisp
+(when (version<= "29" emacs-version)
+  (setq pixel-scroll-precision-mode t))
+#+end_src
