@@ -187,6 +187,13 @@ pip3 install -U debugpy ptvsd pytest behave
         :desc "dap-ui-breakpoints-list" "l" #'dap-ui-breakpoints-list
         :desc "dap-ui-breakpoints-delete" "d" #'dap-ui-breakpoints-delete)))
 #+end_src
+**** Issue with dap-python
+[[file:~/.config/emacs/.local/straight/repos/dap-mode/dap-python.el::let* ((python-executable (dap-python--pyenv-executable-find dap-python-executable)][Link to file on system]]
+I have been changing this line: https://github.com/emacs-lsp/dap-mode/blob/c72ac1b1a5811cfda3c6740bcf24c67222b6c840/dap-python.el#L174 to
+#+begin_src emacs-lisp :tangle no
+(let* ((python-executable (executable-find dap-python-executable))
+#+end_src
+Because in general I'm using ~pipenv~ rather than ~pyvenv~
 *** Add Pip executables to path
 #+begin_src emacs-lisp
 (let ((pip-path (concat (shell-command-to-string "echo -n $(python3 -m site --user-base)") "/bin")))
