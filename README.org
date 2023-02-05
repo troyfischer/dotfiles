@@ -3,7 +3,6 @@
 
 * Dotfiles
 Organizing dotfiles in this repository for quick start up time on a fresh computer. Using [[https://www.gnu.org/software/stow/][GNU Stow]] to create the symbolic links.
-
 * Mac
 ** Install Homebrew
 #+begin_src sh
