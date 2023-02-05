@@ -75,6 +75,9 @@
 ;; cucumber tests
 (package! feature-mode)
 
+;; export org doc to github markdown
+(package! ox-gfm)
+
 ;; jira
 (package! org-jira)
 

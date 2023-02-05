@@ -53,29 +53,46 @@
 #+end_src
 ** Pipenv
 #+begin_src emacs-lisp
-(defun +troy/get-pipenv-dir ()
+(setq +troy/pipenv-root (expand-file-name "~/.local/share/virtualenvs"))
+
+(defun +troy/get-pipenv-full-path ()
   (cd (+troy/get-current-project-root))
   (shell-command-to-string "echo -n $(pipenv --venv -q)"))
+
+(defun +troy/get-pipenv-dir-name ()
+  (if (+troy/get-virtual-env-exists)
+      (file-name-nondirectory (+troy/get-pipenv-full-path))))
+
 (defun +troy/set-pipenv-dir ()
-  (interactive)
-  (setq python-shell-virtualenv-root (+troy/get-pipenv-dir)))
+  (let ((pipenv-dir (+troy/get-pipenv-dir-name)))
+    (when pipenv-dir
+      (setq python-shell-virtualenv-root (concat (file-name-as-directory +troy/pipenv-root) pipenv-dir)))))
 
 (setq pipenv-with-projectile nil)
 
 (defun +troy/pipenv-activate-setup ()
   (pipenv-deactivate)
-  (+troy/set-pipenv-dir)
+  (let ((pipenv-dir (+troy/get-pipenv-dir-name)))
+    (when pipenv-dir
+      (setq python-shell-virtualenv-root (concat (file-name-as-directroy +troy/pipenv-root) pipenv-dir)
+            lsp-pyright-venv-path +troy/pipenv-root
+            lsp-pyright-venv-directory pipenv-dir
+            lsp-pyright-python-executable-cmd (concat (file-name-as-directory +troy/pipenv-root) pipenv-dir "/bin/python"))))
   (pipenv-activate))
 
 (defun +troy/get-virtual-env-exists ()
-  (not (string-match-p "No virtualenv" (+troy/get-pipenv-dir))))
+  (not (string-match-p "No virtualenv" (+troy/get-pipenv-full-path))))
 
 (defun +troy/projectile-pipenv-hook ()
   (let ((pipfile-exists (file-exists-p (concat (projectile-project-root) "Pipfile"))))
     (if (and pipfile-exists (+troy/get-virtual-env-exists))
         (+troy/pipenv-activate-setup) (pipenv-deactivate))))
 
-(add-hook! 'projectile-after-switch-project-hook #'+troy/projectile-pipenv-hook)
+(defun +troy/get-pipenv-dir ()
+  (cd (+troy/get-current-project-root))
+  (shell-command-to-string "echo -n $(pipenv --venv -q)"))
+
+;; (add-hook! 'projectile-after-switch-project-hook #'+troy/projectile-pipenv-hook)
 #+end_src
 ** Open Pycharm from current project
 #+begin_src elisp
@@ -103,7 +120,8 @@
 #+begin_src emacs-lisp
 (use-package! lsp-mode
   :config
-  (setq lsp-headerline-breadcrumb-enable t))
+  (setq lsp-headerline-breadcrumb-enable t)
+  (map! :leader :after lsp-mode "c R" #'lsp-workspace-restart))
 #+end_src
 ** Java
 #+begin_src emacs-lisp :tangle no
@@ -118,9 +136,14 @@
   :config
   (add-to-list 'auto-mode-alist '("\.feature$" . feature-mode)))
 #+end_src
+*** Flycheck
 *** Format On Save
 #+begin_src emacs-lisp
 (add-hook 'python-mode-hook #'format-all-mode)
+#+end_src
+**** Necessary programs
+#+begin_src sh :tangle no
+brew install black
 #+end_src
 *** Jedi
 Jedi is working best so far. Install via:
@@ -137,7 +160,39 @@ pip3 install -U jedi-language-server
     (add-to-list 'lsp-enabled-clients 'jedi))
   (add-to-list 'lsp-jedi-python-library-directories "~/.local/share/virtualenvs"))
 #+end_src
+*** Python Language Server
+[[https://github.com/python-lsp/python-lsp-server][Repository]]
+#+begin_src sh :tangle no
+pip3 install --user python-lsp-server
+#+end_src
+
+#+begin_src emacs-lisp :tangle no
+(use-package! lsp-pylsp
+  :ensure t
+  :config
+  (setq lsp-pylsp-plugins-flake8-enabled t
+        lsp-pylsp-plugins-flake8-max-line-length 100
+        lsp-pylsp-plugins-autopep8-enabled nil
+        lsp-pylsp-plugins-pylint-enabled-nil
+        lsp-pylsp-plugins-pycodestyle-enabled nil
+        lsp-pylsp-plugins-pydocstyle-enabled nil))
+#+end_src
 *** Pyright
+:PROPERTIES:
+:ID:       b1a15861-4228-4df5-9552-8f4975a59314
+:END:
+#+begin_src emacs-lisp
+(use-package! lsp-pyright
+  :hook
+  ((python-mode . (lambda ()
+                    (lsp-deferred)))
+   (flycheck-mode . (lambda ()
+                      (flycheck-add-next-checker 'lsp 'python-flake8)
+                      (flycheck-add-next-checker 'python-flake8 'python-pylint))))
+  :config
+  (setq lsp-pyright-venv-directory "~/.local/share/virtualenvs"))
+#+end_src
+**** LSP PYRIGHT MULTIROOT ISSUE
 When pyright has ~lsp-pyright-multi-root~ set to ~t~ it runs a single server for
 every python project it initializes in. On MacOS this has given me trouble with
 ~too many open files~ issues. To prevent that I've set the variable to nil in [[file:~/.config/emacs/modules/lang/python/config.el::setq lsp-pyright-multi-root
@@ -146,19 +201,25 @@ nil][.config/emacs/modules/lang/python/config.el]].
 After setting the variable delete the lsp-session file in
 [[file:~/.config/emacs/.local/cache/]] (or delete the entire directory which will have
 other repercussions like needing to re-add projects to projectile)
-
+**** Necessary programs
+***** Pyright
+Doom emacs will prompt to install this server automatically but if that doesn't work...
 #+begin_src sh :tangle no
 pip3 install -U pyright
 #+end_src
-
-#+begin_src emacs-lisp
-(use-package! lsp-pyright
-  :config
-  (setq lsp-pyright-venv-directory "~/.local/share/virtualenvs"))
+***** Flycheck Checkers
+Need to install ~pylint~ and ~flake8~ for flycheck.
+#+begin_src sh :tangle no
+brew install flake8 pylint
 #+end_src
 *** Optimize Imports
+**** Pip
 #+begin_src sh :tangle no
 pip3 install -U pyflakes isort
+#+end_src
+**** Homebrew
+#+begin_src sh :tangle no
+brew install isort
 #+end_src
 *** Debugging
 =debugpy= is recommended
@@ -183,6 +244,7 @@ pip3 install -U debugpy ptvsd pytest behave
        :desc "dap-debug-edit-template" "e" #'dap-debug-edit-template
        :desc "dap-next" "n" #'dap-next
        :desc "refresh breakpoints" "R" #'refresh-breakpoints
+       :desc "disconnect" "q" #'dap-disconnect
        (:prefix-map ("u" . "ui")
         :desc "dap-ui-breakpoints-list" "l" #'dap-ui-breakpoints-list
         :desc "dap-ui-breakpoints-delete" "d" #'dap-ui-breakpoints-delete)))
@@ -242,6 +304,15 @@ Add behave configuration every time I open a python file. This could potentially
   (find-file +troy/main-org-agenda-file))
 (map! :leader
       :desc "Open agenda.org" "o a o" #'+troy/open-org-agenda)
+#+end_src
+** ob-http
+[[https://github.com/zweifisch/ob-http][Repository]]
+Package to do Postman like things in org mode.
+#+begin_src emacs-lisp
+(use-package! ob-http
+  :ensure nil
+  :config
+  (add-to-list 'org-babel-load-languages '(http . t)))
 #+end_src
 * Password Store Keybindings
 #+begin_src emacs-lisp
@@ -481,4 +552,16 @@ Smooth scrolling provided in emacs 29!
 #+begin_src emacs-lisp
 (when (version<= "29" emacs-version)
   (setq pixel-scroll-precision-mode t))
+#+end_src
+* Temporary Fix for too many open files
+[[https://www.blogbyben.com/2022/05/gotcha-emacs-on-mac-os-too-many-files.html][Link to where I found the code]]
+I was having issues with [[*Pyright][Pyright]] that was causing this issue but since fixing that this hasn't been needed. It didn't actually solve the problem either but provided a temporary fix until I could restart Emacs.
+#+begin_src emacs-lisp
+(defun file-notify-rm-all-watches ()
+  "Remove all existing file notification watches from Emacs."
+  (interactive)
+  (maphash
+   (lambda (key _value)
+     (file-notify-rm-watch key))
+   file-notify-descriptors))
 #+end_src
