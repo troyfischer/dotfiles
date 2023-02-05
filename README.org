@@ -50,8 +50,7 @@ sudo ln -s /etc/chromium/native-messaging-hosts/com.github.browserpass.native.js
 *** Mac
 **** Install
 [[https://github.com/browserpass/browserpass-extension][Browserpass Extension]]
-[[https://github.com/browserpass/browserpass-native
-][Browserpass Native]]
+[[https://github.com/browserpass/browserpass-native][Browserpass Native]]
 **** Config
 Had to explicitly set a few things in [[file:~/.gnupg/][.gnupg]].
 
