@@ -106,6 +106,7 @@
 (use-package! dired-x
   :config
   (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$") ;; hides dotfiles
+        dired-omit-files (concat dired-omit-files "\\|__pycache__") ;; hides __pycache__
         dired-deletion-confirmer #'y-or-n-p
         dired-open-extensions '(("mkv" . "mpv")
                                 ("mp4" . "mpv"))))
@@ -114,39 +115,28 @@
 #+begin_src emacs-lisp
 (setq evil-kill-on-visual-paste nil) ;; pasting in visual state does not add replaced text to kill ring
 (map! :i "C-y" #'yank) ;; paste in insert using C-y
+(map! :leader
+      (:prefix-map
+       ("y" "yank")
+       :desc "org-yank-link" "o" #'link-hint-copy-link-at-point
+       :desc "magit-yank-link" "g" #'forge-copy-url-at-point-as-kill))
 #+end_src
-* Lsp
-** Breadcrumbs
-#+begin_src emacs-lisp
-(use-package! lsp-mode
-  :config
-  (setq lsp-headerline-breadcrumb-enable t)
-  (map! :leader :after lsp-mode "c R" #'lsp-workspace-restart))
-#+end_src
-** Java
-#+begin_src emacs-lisp :tangle no
-(use-package! lsp-java
-  :config
-  (setq lsp-java-code-generation-hash-code-equals-use-java7objects t))
-#+end_src
-** Python
-*** Feature Mode
+* Feature Mode
 #+begin_src emacs-lisp
 (use-package! feature-mode
   :config
   (add-to-list 'auto-mode-alist '("\.feature$" . feature-mode)))
 #+end_src
-*** Flycheck
-*** Format On Save
+* Programming Language Configurations
+** Python
+*** LSP
 #+begin_src emacs-lisp
-(add-hook 'python-mode-hook #'format-all-mode)
+(use-package! lsp-diagnostics
+  :after flycheck
+  :config
+  (lsp-diagnostics-flycheck-enable))
 #+end_src
-**** Necessary programs
-#+begin_src sh :tangle no
-brew install black
-#+end_src
-*** Jedi
-Jedi is working best so far. Install via:
+**** Jedi
 #+begin_src sh :tangle no
 pip3 install -U jedi-language-server
 #+end_src
@@ -160,7 +150,7 @@ pip3 install -U jedi-language-server
     (add-to-list 'lsp-enabled-clients 'jedi))
   (add-to-list 'lsp-jedi-python-library-directories "~/.local/share/virtualenvs"))
 #+end_src
-*** Python Language Server
+**** Python Language Server
 [[https://github.com/python-lsp/python-lsp-server][Repository]]
 #+begin_src sh :tangle no
 pip3 install --user python-lsp-server
@@ -177,7 +167,7 @@ pip3 install --user python-lsp-server
         lsp-pylsp-plugins-pycodestyle-enabled nil
         lsp-pylsp-plugins-pydocstyle-enabled nil))
 #+end_src
-*** Pyright
+**** Pyright
 :PROPERTIES:
 :ID:       b1a15861-4228-4df5-9552-8f4975a59314
 :END:
@@ -190,9 +180,10 @@ pip3 install --user python-lsp-server
                       (flycheck-add-next-checker 'lsp 'python-flake8)
                       (flycheck-add-next-checker 'python-flake8 'python-pylint))))
   :config
-  (setq lsp-pyright-venv-directory "~/.local/share/virtualenvs"))
+  (setq lsp-pyright-venv-directory "~/.local/share/virtualenvs"
+        lsp-pyright-typechecking-mode "off"))
 #+end_src
-**** LSP PYRIGHT MULTIROOT ISSUE
+***** LSP PYRIGHT MULTIROOT ISSUE
 When pyright has ~lsp-pyright-multi-root~ set to ~t~ it runs a single server for
 every python project it initializes in. On MacOS this has given me trouble with
 ~too many open files~ issues. To prevent that I've set the variable to nil in [[file:~/.config/emacs/modules/lang/python/config.el::setq lsp-pyright-multi-root
@@ -201,25 +192,16 @@ nil][.config/emacs/modules/lang/python/config.el]].
 After setting the variable delete the lsp-session file in
 [[file:~/.config/emacs/.local/cache/]] (or delete the entire directory which will have
 other repercussions like needing to re-add projects to projectile)
-**** Necessary programs
-***** Pyright
+***** Necessary programs
+****** Pyright
 Doom emacs will prompt to install this server automatically but if that doesn't work...
 #+begin_src sh :tangle no
 pip3 install -U pyright
 #+end_src
-***** Flycheck Checkers
+****** Flycheck Checkers
 Need to install ~pylint~ and ~flake8~ for flycheck.
 #+begin_src sh :tangle no
 brew install flake8 pylint
-#+end_src
-*** Optimize Imports
-**** Pip
-#+begin_src sh :tangle no
-pip3 install -U pyflakes isort
-#+end_src
-**** Homebrew
-#+begin_src sh :tangle no
-brew install isort
 #+end_src
 *** Debugging
 =debugpy= is recommended
@@ -235,6 +217,9 @@ pip3 install -U debugpy ptvsd pytest behave
 (defun refresh-breakpoints ()
   (interactive)
   (set-window-buffer nil (current-buffer)))
+#+end_src
+**** Key Mapping
+#+begin_src emacs-lisp
 (map! :leader
       (:prefix-map ("d" . "debug")
        :desc "dap-breakpoint-toggle" "t" #'dap-breakpoint-toggle
@@ -256,6 +241,44 @@ I have been changing this line: https://github.com/emacs-lsp/dap-mode/blob/c72ac
 (let* ((python-executable (executable-find dap-python-executable))
 #+end_src
 Because in general I'm using ~pipenv~ rather than ~pyvenv~
+**** Custom Dap Template
+***** Behave
+#+begin_src emacs-lisp :tangle no
+(defun +troy/add-behave-template ()
+  (dap-register-debug-template
+   "Python :: Run behave (buffer)"
+   (list :type "python"
+         :args "tests/features"
+         :cwd (+troy/get-current-project-root)
+         :program nil
+         :module "behave"
+         :request "launch"
+         :name "Python :: Run behave (buffer)")))
+(add-hook! 'python-mode-hook #'+troy/add-behave-template)
+#+end_src
+*** Formatting
+**** Format On Save
+#+begin_src emacs-lisp
+(add-hook 'python-mode-hook #'format-all-mode)
+#+end_src
+**** Necessary programs
+#+begin_src sh :tangle no
+brew install black
+#+end_src
+**** Optimize Imports
+#+begin_src emacs-lisp :tangle no
+(use-package! py-isort
+  :after python
+  :hook ((before-save . py-isort-before-save)))
+#+end_src
+***** Pip
+#+begin_src sh :tangle no
+pip3 install -U pyflakes isort
+#+end_src
+***** Homebrew
+#+begin_src sh :tangle no
+brew install isort
+#+end_src
 *** Add Pip executables to path
 #+begin_src emacs-lisp
 (let ((pip-path (concat (shell-command-to-string "echo -n $(python3 -m site --user-base)") "/bin")))
@@ -265,20 +288,18 @@ Because in general I'm using ~pipenv~ rather than ~pyvenv~
 #+begin_src emacs-lisp
 (add-hook! 'python-mode-hook #'+troy/set-pipenv-dir)
 #+end_src
-*** Custom Dap Template
-Add behave configuration every time I open a python file. This could potentially be more accurate but works for now.
+** Java
 #+begin_src emacs-lisp :tangle no
-(defun +troy/add-behave-template ()
-  (dap-register-debug-template
-   "Python :: Run behave (buffer)"
-   (list :type "python"
-         :args ""
-         :cwd nil
-         :program (concat (+troy/get-current-project-root) "tests/features")
-         :module "behave"
-         :request "launch"
-         :name "Python :: Run behave (buffer)")))
-(add-hook! 'python-mode-hook #'+troy/add-behave-template)
+(use-package! lsp-java
+  :config
+  (setq lsp-java-code-generation-hash-code-equals-use-java7objects t))
+#+end_src
+* Breadcrumbs
+#+begin_src emacs-lisp
+(use-package! lsp-mode
+  :config
+  (setq lsp-headerline-breadcrumb-enable t)
+  (map! :leader :after lsp-mode "c R" #'lsp-workspace-restart))
 #+end_src
 * Org
 ** Config
@@ -413,7 +434,7 @@ Org normally inserts the table of contents directly before the first headline of
 ** Corporate Examples
 #+begin_src emacs-lisp :tangle no
 ;; (with-eval-after-load 'forge (add-to-list 'forge-alist '("github.cloud.company.com" "github.cloud.company.com/api/v3" "github.cloud.company.com" forge-github-repository)))
-;; (with-eval-after-load 'browse-at-remote (add-to-list 'browse-at-remote-remote-type-regexps '("^github\\.cloud\\.company\\.com$" . "github")))
+;; (with-eval-after-load 'browse-at-remote (add-to-list 'browse-at-remote-remote-type-regexps `(:host ,(rx bol "github.cloud.company.com" eol) :type "github" :actual-host "github.cloud.company.com")))
 #+end_src
 * Code Review
 Config: [[https://github.com/wandersoncferreira/code-review]]
@@ -424,6 +445,8 @@ Config: [[https://github.com/wandersoncferreira/code-review]]
           (lambda ()
             ;; include *Code-Review* buffer into current workspace
             (persp-add-buffer (current-buffer))))
+
+(setq code-review-lgtm-message "LGTM ✏")
 #+end_src
 ** Corporate Examples
 #+begin_src emacs-lisp :tangle no
