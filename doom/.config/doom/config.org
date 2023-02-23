@@ -117,7 +117,7 @@
 (map! :i "C-y" #'yank) ;; paste in insert using C-y
 (map! :leader
       (:prefix-map
-       ("y" "yank")
+       ("y" . "yank")
        :desc "org-yank-link" "o" #'link-hint-copy-link-at-point
        :desc "magit-yank-link" "g" #'forge-copy-url-at-point-as-kill))
 #+end_src
