@@ -49,7 +49,7 @@
 ** Project root
 #+begin_src emacs-lisp
 (defun +troy/get-current-project-root ()
-  (expand-file-name (car (last (project-current)))))
+  (expand-file-name (cdr (project-current))))
 #+end_src
 ** Pipenv
 #+begin_src emacs-lisp
@@ -110,16 +110,6 @@
         dired-deletion-confirmer #'y-or-n-p
         dired-open-extensions '(("mkv" . "mpv")
                                 ("mp4" . "mpv"))))
-#+end_src
-* Evil
-#+begin_src emacs-lisp
-(setq evil-kill-on-visual-paste nil) ;; pasting in visual state does not add replaced text to kill ring
-(map! :i "C-y" #'yank) ;; paste in insert using C-y
-(map! :leader
-      (:prefix-map
-       ("y" . "yank")
-       :desc "org-yank-link" "o" #'link-hint-copy-link-at-point
-       :desc "magit-yank-link" "g" #'forge-copy-url-at-point-as-kill))
 #+end_src
 * Feature Mode
 #+begin_src emacs-lisp
@@ -357,7 +347,7 @@ Package to do Postman like things in org mode.
 #+end_src
 * Vertico
 #+begin_src emacs-lisp
-(map! :map vertico-map "C-l" #'vertico-directory-enter) ;; allow C-l to select an item
+(map! :map vertico-map "C-l" #'+vertico/enter-or-preview) ;; allow C-l to select an item
 #+end_src
 * Vterm
 #+begin_src emacs-lisp
@@ -368,26 +358,6 @@ Package to do Postman like things in org mode.
         :i "C-y" #'vterm-yank
         :i "C-k" #'vterm-send-up
         :i "C-j" #'vterm-send-down))
-#+end_src
-* Z-Notes
-Potentially helpful hints.
-#+begin_src emacs-lisp :tangle no
-;; Here are some additional functions/macros that could help you configure Doom:
-;;
-;; - `load!' for loading external *.el files relative to this one
-;; - `use-package!' for configuring packages
-;; - `after!' for running code after a package has loaded
-;; - `add-load-path!' for adding directories to the `load-path', relative to
-;;   this file. Emacs searches the `load-path' when you load packages with
-;;   `require' or `use-package'.
-;; - `map!' for binding new keys
-;;
-;; To get information about any of these functions/macros, move the cursor over
-;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
-;; This will open documentation for it, including demos of how they are used.
-;;
-;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
-;; they are implemented.
 #+end_src
 * Blog
 *NOTE* you need to copy the font awesome directory yourself. This saves a lot of time when exporting static assets.
@@ -560,15 +530,6 @@ Config: [[https://github.com/wandersoncferreira/code-review]]
     )
 
   )
-#+end_src
-* Open Links
-#+begin_src emacs-lisp
-(setq +troy/website-list '(("google" . "https://google.com") ("bing" . "https://bing.com")))
-
-(defun +troy/open-url ()
-  (interactive)
-  (let ((selection (completing-read "Open in browser:" (mapcar #'car +troy/website-list))))
-    (browse-url (cdr (assoc selection +troy/website-list)))))
 #+end_src
 * Smooth Scroll
 Smooth scrolling provided in emacs 29!
