@@ -1,2 +1,3 @@
 doom/.config/doom/config.el
 doom/.config/doom/custom.el
+*.DS_Store
