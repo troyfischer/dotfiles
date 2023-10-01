@@ -1,12 +1,12 @@
 #!/bin/sh
 
-magit () {
-    git_root=$(git rev-parse --show-toplevel)
+dired () {
+    dir=$PWD
     emacsclient -a emacs \
-        -e "(magit-status \"${git_root}\")"
+        -e "(dired \"${dir}\")"
     if [[ -f `which osascript` ]]; then
         osascript -e "tell application \"Emacs\" to activate"
     fi
 }
 
-magit
+dired
