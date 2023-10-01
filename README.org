@@ -9,14 +9,44 @@ Organizing dotfiles in this repository for quick start up time on a fresh comput
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 #+end_src
 ** Programs
+*** General
+#+name: programs
 #+begin_src sh
-brew install pass pass-otp stow ripgrep fd emacs-mac sassc mactex pandoc
+echo \
+bat \
+cmake \
+fd \
+gcc \
+gnupg \
+mactex \
+neovim \
+node \
+pandoc \
+pass \
+pass-otp \
+pinentry \
+pinentry-mac \
+pipenv \
+qmk \
+ripgrep \
+sassc \
+sqlite \
+stow \
+tmux \
+#+end_src
+
+#+begin_src sh :var programs=programs :results silent
+brew install $programs
+#+end_src
+*** Browser
+**** Brave
+#+begin_src sh :results silent
 brew install --cask brave-browser
 #+end_src
-** Fonts
+*** Fonts
 #+begin_src sh
 brew tap homebrew/cask-fonts
-brew install --cask font-fira-code font-jetbrains-mono font-overpass
+brew install --cask font-fira-code font-fira-code-nerd-font font-jetbrains-mono font-jetbrains-mono-nerd-font font-overpass
 #+end_src
 ** Doom Emacs
 [[https://github.com/doomemacs/doomemacs][Install Doom Emacs]]
@@ -67,3 +97,5 @@ To restart the gpg agent
 #+begin_src sh
 gpgconf --kill gpg-agent
 #+end_src
+** Emacs Native Comp on apple silicone chips
+- [[https://github.com/d12frosted/homebrew-emacs-plus/issues/562][Solution]]
