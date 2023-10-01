@@ -111,6 +111,16 @@
         dired-open-extensions '(("mkv" . "mpv")
                                 ("mp4" . "mpv"))))
 #+end_src
+* Evil
+#+begin_src emacs-lisp
+(setq evil-kill-on-visual-paste nil)
+(map! :i "C-y" #'yank)
+(map! :leader
+      (:prefix-map
+       ("y" . "yank")
+       :desc "org-yank-link" "o" #'link-hint-copy-link-at-point
+       :desc "magit-yank-link" "g" #'forge-copy-url-at-point-as-kill))
+#+end_src
 * Feature Mode
 #+begin_src emacs-lisp
 (use-package! feature-mode
