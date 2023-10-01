@@ -43,6 +43,10 @@ brew install $programs
 #+begin_src sh :results silent
 brew install --cask brave-browser
 #+end_src
+*** Terminal
+#+begin_src
+brew install --cask alacritty kitty
+#+end_src
 *** Fonts
 #+begin_src sh
 brew tap homebrew/cask-fonts
