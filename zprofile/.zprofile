@@ -8,6 +8,7 @@
 # Default programs:
 export EDITOR="emacs"
 export BROWSER="brave"
+export TERM="alacritty"
 
 # ~/ Clean-up:
 export XDG_CONFIG_HOME="$HOME/.config"
