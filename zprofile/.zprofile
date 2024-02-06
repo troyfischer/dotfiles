@@ -27,3 +27,6 @@ export PATH="/Library/TeX/texbin:$PATH"
 # Adds `~/.config/emacs/bin` to $PATH
 export PATH="$XDG_CONFIG_HOME/emacs/bin:$PATH"
 eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Pipenv
+export PIPENV_VENV_IN_PROJECT=1

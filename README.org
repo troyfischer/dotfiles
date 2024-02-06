@@ -33,6 +33,7 @@ sassc \
 sqlite \
 stow \
 tmux \
+pngquant \
 #+end_src
 
 #+begin_src sh :var programs=programs :results silent
@@ -50,7 +51,17 @@ brew install --cask alacritty kitty
 *** Fonts
 #+begin_src sh
 brew tap homebrew/cask-fonts
-brew install --cask font-fira-code font-fira-code-nerd-font font-jetbrains-mono font-jetbrains-mono-nerd-font font-overpass
+brew install --cask \
+    font-fira-code \
+    font-fira-code-nerd-font \
+    font-jetbrains-mono \
+    font-jetbrains-mono-nerd-font \
+    font-overpass \
+    font-hack \
+    font-cascadia-code \
+    font-cascadia-mono \
+    font-ibm-plex \
+    font-source-code-pro
 #+end_src
 ** Doom Emacs
 [[https://github.com/doomemacs/doomemacs][Install Doom Emacs]]
@@ -82,8 +93,8 @@ sudo ln -s /etc/chromium/native-messaging-hosts/com.github.browserpass.native.js
 #+end_src
 *** Mac
 **** Install
-[[https://github.com/browserpass/browserpass-extension][Browserpass Extension]]
-[[https://github.com/browserpass/browserpass-native][Browserpass Native]]
+- [[https://github.com/browserpass/browserpass-extension][Browserpass Extension]]
+- [[https://github.com/browserpass/browserpass-native][Browserpass Native]]
 **** Config
 Had to explicitly set a few things in [[file:~/.gnupg/][.gnupg]].
 
@@ -96,6 +107,10 @@ In [[file:~/.gnupg/gpg-agent.conf][gpg-agent.conf]]
 #+begin_src conf
 pinentry-program /usr/local/bin/pinentry-mac
 #+end_src
+or
+#+begin_src conf
+pinentry-program /opt/homebrew/bin/pinentry-mac
+#+end_src
 
 To restart the gpg agent
 #+begin_src sh
@@ -103,3 +118,6 @@ gpgconf --kill gpg-agent
 #+end_src
 ** Emacs Native Comp on apple silicone chips
 - [[https://github.com/d12frosted/homebrew-emacs-plus/issues/562][Solution]]
+* Notes
+** Running Behave Tests
+[[https://stackoverflow.com/questions/52725150/how-to-debug-behave-bdd-scenario-using-python-debugger-and-visual-studio-code][dap debug setup for behave tests]]

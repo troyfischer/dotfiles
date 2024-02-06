@@ -10,12 +10,10 @@
 (setq user-full-name "Troy Fischer"
       user-mail-address "troytfischer@gmail.com"
       display-line-numbers-type t
-      doom-theme 'doom-one
+      doom-theme 'doom-horizon
       password-cache-expiry nil   ;; only type password once
       delete-by-moving-to-trash t ;; move files to trash instead of perma deletion
-      doom-font (font-spec :family "Fira Code" :size 15)
-      doom-variable-pitch-font (font-spec :family "Overpass" :size 15)
-      doom-big-font (font-spec :family "Fira Code" :size 24))
+      )
 
 ;; display time in modeline
 (setq display-time-format "%m-%d-%y %l:%M %p"
@@ -41,6 +39,53 @@
 (+troy/set-underline)
 (add-hook! (prog-mode text-mode conf-mode special-mode feature-mode) #'hl-line-mode)
 #+end_src
+* Fonts
++ Cascadia Code
++ Hack
++ Fira Code
++ Jetbrains Mono
++ Overpass
++ IBM Plex Mono
++ Source Code Pro
+
+#+name: main-font
+: Cascadia Code
+
+#+name: variable-font
+: Source Code Pro
+
+#+begin_src emacs-lisp :var main-font=main-font variable-font=variable-font :results none
+(setq +troy/mono-fonts '("Cascadia Code" "Hack" "Fira Code" "Jetbrains Mono" "IBM Plex Mono"))
+(setq +troy/variable-fonts '("Overpass" "Source Code Pro"))
+(setq +troy/font-types '("Code" "Variable"))
+
+(defun +troy/read-font (fonts)
+  (completing-read "Font: " fonts))
+(defun +troy/read-face (faces)
+  (completing-read "Font Type: " faces))
+
+(defun +troy/change-font ()
+  (interactive)
+  (let ((face (+troy/read-face +troy/font-types)))
+    (let ((font (+troy/read-font (if (string= face "Code") +troy/mono-fonts +troy/variable-fonts))))
+      (if (string= face "Code") (+troy/set-mono-font font) (+troy/set-variable-font font))
+      (message "%s font set to %s" face font)))
+  (doom/reload-font))
+
+(defun +troy/set-mono-font (f)
+  (setq doom-font (font-spec :family f :size 15)
+        doom-big-font (font-spec :family f :size 24)))
+
+(defun +troy/set-variable-font (f)
+  (setq doom-variable-pitch-font (font-spec :family f :size 15)))
+
+
+(+troy/set-mono-font main-font)
+(+troy/set-variable-font variable-font)
+
+(map! :leader :desc "change font" "h r F" #'+troy/change-font)
+#+end_src
+
 * Dashboard
 #+begin_src emacs-lisp
 (setq +doom-dashboard-banner-file (expand-file-name "default-emacs.svg" doom-private-dir))  ;; use custom image as banner
@@ -100,6 +145,15 @@
   (interactive)
   (async-shell-command (format "open -na 'PyCharm CE.app' --args %s" (projectile-project-root)))
   (doom/window-maximize-buffer))
+#+end_src
+** Open Neovim
+#+begin_src emacs-lisp
+(defun +troy/open-project-in-neovim ()
+  (interactive)
+  (call-process-shell-command (format "alacritty -e nvim %s" (projectile-project-root)) nil 0))
+(defun +troy/open-file-in-neovim ()
+  (interactive)
+  (call-process-shell-command (format "alacritty -e nvim %s" (buffer-file-name)) nil 0))
 #+end_src
 * Dired
 #+begin_src emacs-lisp
@@ -257,10 +311,6 @@ Because in general I'm using ~pipenv~ rather than ~pyvenv~
 (add-hook! 'python-mode-hook #'+troy/add-behave-template)
 #+end_src
 *** Formatting
-**** Format On Save
-#+begin_src emacs-lisp
-(add-hook 'python-mode-hook #'format-all-mode)
-#+end_src
 **** Necessary programs
 #+begin_src sh :tangle no
 brew install black
@@ -335,6 +385,33 @@ Package to do Postman like things in org mode.
   :config
   (add-to-list 'org-babel-load-languages '(http . t)))
 #+end_src
+** Latex
+See [[https://emacs.stackexchange.com/questions/79285/why-is-org-highlight-latex-and-related-messing-with-org-hyperlink-description][link]] for =org-highlight-latex-and-related= details. Without that setting the org syntax highlighting gets messed up.
+#+begin_src emacs-lisp
+(after! org
+  (use-package! ox-extra
+    :config
+    (ox-extras-activate '(latex-header-blocks ignore-headlines)))
+
+  ;; Import ox-latex to get org-latex-classes and other funcitonality
+  ;; for exporting to LaTeX from org
+  (use-package! ox-latex
+    :init
+    ;; code here will run immediately
+    :config
+    ;; code here will run after the package is loaded
+    (setq org-latex-with-hyperref nil) ;; stop org adding hypersetup{author..} to latex export
+    ;; (setq org-latex-prefer-user-labels t)
+
+    (setq org-highlight-latex-and-related '(script entities))
+    ;; deleted unwanted file extensions after latexMK
+    (setq org-latex-logfiles-extensions
+          (quote ("xdv" "lof" "lot" "tex~" "aux" "idx" "log" "out" "toc" "nav" "snm" "vrb" "dvi" "fdb_latexmk" "blg" "brf" "fls" "entoc" "ps" "spl" "bbl" "xmpi" "run.xml" "bcf" "acn" "acr" "alg" "glg" "gls" "ist")))
+
+    (unless (boundp 'org-latex-classes)
+      (setq org-latex-classes nil)))
+  )
+#+end_src
 * Password Store Keybindings
 #+begin_src emacs-lisp
 (defun +troy/password-store-dir ()
@@ -354,6 +431,8 @@ Package to do Postman like things in org mode.
 #+begin_src emacs-lisp
 (map! :leader :desc "ripgrep" "p G" #'projectile-ripgrep)
 (map! :leader :desc "PyCharm" "p P" #'+troy/open-project-in-pycharm)
+(map! :leader :desc "Neovim" "p N" #'+troy/open-project-in-neovim)
+(map! :leader :desc "Neovim" "p n" #'+troy/open-file-in-neovim)
 #+end_src
 * Vertico
 #+begin_src emacs-lisp
@@ -558,4 +637,11 @@ I was having issues with [[*Pyright][Pyright]] that was causing this issue but s
    (lambda (key _value)
      (file-notify-rm-watch key))
    file-notify-descriptors))
+#+end_src
+* Screenshot.el
++ [[https://github.com/tecosaur/screenshot][Github]] 
++ ~x-export-frames~ is not available on macos
+#+begin_src emacs-lisp
+(when (not (eq system-type 'darwin))
+  (use-package! screenshot))
 #+end_src
