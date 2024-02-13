@@ -180,7 +180,7 @@ Run ~fc-list~ to view available fonts.
 
 ;; Set the variable pitch face
 (set-face-attribute 'variable-pitch nil
-                    :font "Source Sans Pro"
+                    :font "JetBrainsMono Nerd Font"
                     :height 140
                     :weight 'light)
 #+end_src
