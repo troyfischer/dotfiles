@@ -4,6 +4,8 @@ return {
 
   dependencies = {
 
+    { "mfussenegger/nvim-dap-python" },
+
     -- fancy UI for the debugger
     {
       "rcarriga/nvim-dap-ui",
