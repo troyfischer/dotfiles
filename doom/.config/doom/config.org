@@ -183,6 +183,10 @@
 #+end_src
 * Programming Language Configurations
 ** Python
+*** run-python shell
+#+begin_src emacs-lisp
+(setq python-shell-completion-native-enable nil)
+#+end_src
 *** LSP
 #+begin_src emacs-lisp
 (use-package! lsp-diagnostics
