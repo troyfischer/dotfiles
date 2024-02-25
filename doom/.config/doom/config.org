@@ -10,7 +10,7 @@
 (setq user-full-name "Troy Fischer"
       user-mail-address "troytfischer@gmail.com"
       display-line-numbers-type t
-      doom-theme 'doom-horizon
+      doom-theme 'doom-bluloco-dark
       password-cache-expiry nil   ;; only type password once
       delete-by-moving-to-trash t ;; move files to trash instead of perma deletion
       )
