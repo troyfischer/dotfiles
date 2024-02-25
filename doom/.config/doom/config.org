@@ -455,11 +455,15 @@ See [[https://emacs.stackexchange.com/questions/79285/why-is-org-highlight-latex
 * Blog
 *NOTE* you need to copy the font awesome directory yourself. This saves a lot of time when exporting static assets.
 #+begin_src emacs-lisp
+(setq org-html-postamble-format
+      '(("en" "<p class=\"author\">Author: %a</p><p class=\"date\">Updated: %C</p>")))
+(setq org-html-postamble t)
 (setq org-html-head-include-default-style nil)
 (setq org-publish-project-alist
       '(
         ("blog-html"
          :recursive t
+         :base-extension "org"
          :base-directory "~/blog/content"
          :publishing-directory "~/blog/public"
          :publishing-function org-html-publish-to-html
@@ -467,10 +471,10 @@ See [[https://emacs.stackexchange.com/questions/79285/why-is-org-highlight-latex
 
          )
         ("blog-static"
+         :recursive t
          :base-directory "~/blog/content/"
          :base-extension "css\\|js\\|png\\|jpg\\|jpeg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|ico"
          :publishing-directory "~/blog/public/"
-         :recursive t
          :publishing-function org-publish-attachment
          )
         ("blog" :components ("blog-html" "blog-static"))))
