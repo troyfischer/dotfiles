@@ -649,3 +649,10 @@ I was having issues with [[*Pyright][Pyright]] that was causing this issue but s
 (when (not (eq system-type 'darwin))
   (use-package! screenshot))
 #+end_src
+* PDFView Mode
+#+begin_src emacs-lisp
+(defun +troy/pdf-view-config ()
+  (display-line-numbers-mode -1)
+  (global-hl-line-mode -1))
+(add-hook! 'pdf-view-mode-hook #'+troy/pdf-view-config)
+#+end_src
