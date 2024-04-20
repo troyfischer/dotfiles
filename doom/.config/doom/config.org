@@ -191,7 +191,8 @@ pip3 install --user python-lsp-server
                       (flycheck-add-next-checker 'python-flake8 'python-pylint))))
   :config
   (setq lsp-pyright-venv-directory "~/.local/share/virtualenvs"
-        lsp-pyright-typechecking-mode "off"))
+        lsp-pyright-typechecking-mode "off"
+        lsp-pyright-multi-root nil))
 #+end_src
 ***** LSP PYRIGHT MULTIROOT ISSUE
 When pyright has ~lsp-pyright-multi-root~ set to ~t~ it runs a single server for
