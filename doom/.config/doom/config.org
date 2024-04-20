@@ -91,54 +91,6 @@
 (setq +doom-dashboard-banner-file (expand-file-name "default-emacs.svg" doom-private-dir))  ;; use custom image as banner
 #+end_src
 * My Functions
-** Project root
-#+begin_src emacs-lisp
-(defun +troy/get-current-project-root ()
-  (expand-file-name (cdr (project-current))))
-#+end_src
-** Pipenv
-#+begin_src emacs-lisp
-(setq +troy/pipenv-root (expand-file-name "~/.local/share/virtualenvs"))
-
-(defun +troy/get-pipenv-full-path ()
-  (cd (+troy/get-current-project-root))
-  (shell-command-to-string "echo -n $(pipenv --venv -q)"))
-
-(defun +troy/get-pipenv-dir-name ()
-  (if (+troy/get-virtual-env-exists)
-      (file-name-nondirectory (+troy/get-pipenv-full-path))))
-
-(defun +troy/set-pipenv-dir ()
-  (let ((pipenv-dir (+troy/get-pipenv-dir-name)))
-    (when pipenv-dir
-      (setq python-shell-virtualenv-root (concat (file-name-as-directory +troy/pipenv-root) pipenv-dir)))))
-
-(setq pipenv-with-projectile nil)
-
-(defun +troy/pipenv-activate-setup ()
-  (pipenv-deactivate)
-  (let ((pipenv-dir (+troy/get-pipenv-dir-name)))
-    (when pipenv-dir
-      (setq python-shell-virtualenv-root (concat (file-name-as-directroy +troy/pipenv-root) pipenv-dir)
-            lsp-pyright-venv-path +troy/pipenv-root
-            lsp-pyright-venv-directory pipenv-dir
-            lsp-pyright-python-executable-cmd (concat (file-name-as-directory +troy/pipenv-root) pipenv-dir "/bin/python"))))
-  (pipenv-activate))
-
-(defun +troy/get-virtual-env-exists ()
-  (not (string-match-p "No virtualenv" (+troy/get-pipenv-full-path))))
-
-(defun +troy/projectile-pipenv-hook ()
-  (let ((pipfile-exists (file-exists-p (concat (projectile-project-root) "Pipfile"))))
-    (if (and pipfile-exists (+troy/get-virtual-env-exists))
-        (+troy/pipenv-activate-setup) (pipenv-deactivate))))
-
-(defun +troy/get-pipenv-dir ()
-  (cd (+troy/get-current-project-root))
-  (shell-command-to-string "echo -n $(pipenv --venv -q)"))
-
-;; (add-hook! 'projectile-after-switch-project-hook #'+troy/projectile-pipenv-hook)
-#+end_src
 ** Open Pycharm from current project
 #+begin_src elisp
 (defun +troy/open-project-in-pycharm ()
@@ -337,10 +289,6 @@ brew install isort
 #+begin_src emacs-lisp
 (let ((pip-path (concat (shell-command-to-string "echo -n $(python3 -m site --user-base)") "/bin")))
   (add-to-list 'exec-path pip-path))
-#+end_src
-*** Set virtual env
-#+begin_src emacs-lisp
-(add-hook! 'python-mode-hook #'+troy/set-pipenv-dir)
 #+end_src
 ** Java
 #+begin_src emacs-lisp :tangle no
