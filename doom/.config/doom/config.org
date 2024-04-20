@@ -525,6 +525,15 @@ I was having issues with [[*Pyright][Pyright]] that was causing this issue but s
   (global-hl-line-mode -1))
 (add-hook! 'pdf-view-mode-hook #'+troy/pdf-view-config)
 #+end_src
+* Leetcode
+#+begin_src emacs-lisp
+(use-package! leetcode
+  :config
+  (setq leetcode-prefer-language "python3")
+  (setq leetcode-prefer-sql "mysql")
+  (setq leetcode-save-solutions t)
+  (setq leetcode-directory "~/leetcode"))
+#+end_src
 * Yank commands
 #+begin_src emacs-lisp
 (map! :leader

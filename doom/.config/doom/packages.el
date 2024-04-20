@@ -84,3 +84,4 @@
 (when (not (eq system-type 'darwin))
   (package! screenshot
     :recipe (:host github :repo "tecosaur/screenshot")))
+(package! leetcode)
