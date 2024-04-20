@@ -33,7 +33,7 @@
        doom-quit           ; DOOM quit-message prompts when you quit Emacs
        (emoji +unicode)  ; 🙂
        hl-todo             ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
-       ;;hydra
+       hydra
        ;;indent-guides     ; highlighted indent columns
        ;;(ligatures +extra)  ; ligatures and symbols to make your code pretty again
        ;;minimap           ; show a map of the code on the side
@@ -52,7 +52,7 @@
        zen                 ; distraction-free coding or writing
 
        :editor
-       (evil +everywhere)  ; come to the dark side, we have cookies
+       ;;(evil +everywhere)  ; come to the dark side, we have cookies
        file-templates      ; auto-snippets for empty files
        fold                ; (nigh) universal code folding
        (format +onsave)              ; automated prettiness
@@ -99,7 +99,7 @@
        lsp                 ; M-x vscode
        (magit +forge)               ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
-       ;;pass              ; password manager for nerds
+       (pass +auth)              ; password manager for nerds
        pdf                 ; pdf enhancements
        ;;prodigy           ; FIXME managing external services & code builders
        rgb                 ; creating color strings

@@ -49,10 +49,6 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
                                         ;(unpin! t)
 
-;; pass
-(package! password-store)
-(package! password-store-otp)
-
 ;; anki
 (package! anki-connect)
 (package! anki-editor)
