@@ -117,16 +117,6 @@
         dired-open-extensions '(("mkv" . "mpv")
                                 ("mp4" . "mpv"))))
 #+end_src
-* Evil
-#+begin_src emacs-lisp
-(setq evil-kill-on-visual-paste nil)
-(map! :i "C-y" #'yank)
-(map! :leader
-      (:prefix-map
-       ("y" . "yank")
-       :desc "org-yank-link" "o" #'link-hint-copy-link-at-point
-       :desc "magit-yank-link" "g" #'forge-copy-url-at-point-as-kill))
-#+end_src
 * Feature Mode
 #+begin_src emacs-lisp
 (use-package! feature-mode
@@ -316,6 +306,8 @@ brew install isort
         org-default-notes-file (concat org-directory "notes.org")
         org-agenda-span 30
         org-hide-emphasis-markers t)
+  (map! :map org-mode-map
+        :localleader "TAB" #'org-toggle-inline-images)
   (add-to-list 'org-refile-targets '(org-default-notes-file :maxlevel . 3))
   ;; disable org mode auto complete suggestions
   (add-hook! 'org-mode-hook #'(lambda () (company-mode -1))))
@@ -334,6 +326,7 @@ brew install isort
 Package to do Postman like things in org mode.
 #+begin_src emacs-lisp
 (use-package! ob-http
+  :after org-babel
   :ensure nil
   :config
   (add-to-list 'org-babel-load-languages '(http . t)))
@@ -470,14 +463,6 @@ Config: [[https://github.com/wandersoncferreira/code-review]]
 ;;       code-review-github-base-url "github.cloud.company.com"
 ;;       code-review-github-graphql-host "github.cloud.company.com/api")
 #+end_src
-* Swiper
-#+begin_src emacs-lisp
-(map! "C-s" #'swiper-isearch)
-(map! :map ivy-minibuffer-map
-      "C-j" #'ivy-next-line
-      "C-k" #'ivy-previous-line)
-#+end_src
-
 * Json
 #+begin_src emacs-lisp
 (add-hook 'json-mode-hook (lambda ()
@@ -539,4 +524,34 @@ I was having issues with [[*Pyright][Pyright]] that was causing this issue but s
   (display-line-numbers-mode -1)
   (global-hl-line-mode -1))
 (add-hook! 'pdf-view-mode-hook #'+troy/pdf-view-config)
+#+end_src
+* Yank commands
+#+begin_src emacs-lisp
+(map! :leader
+      (:prefix-map
+       ("y" . "yank")
+       :desc "org-yank-link" "o" #'link-hint-copy-link-at-point
+       :desc "magit-yank-link" "g" #'forge-copy-url-at-point-as-kill))
+#+end_src
+* abo-abo modes
+** Avy
+#+begin_src emacs-lisp
+(use-package! avy
+  :config
+  (setq avy-all-windows t)
+  (map! "M-s" #'avy-goto-char-timer))
+#+end_src
+** Swiper
+#+begin_src emacs-lisp
+(map! "C-s" #'swiper-isearch
+      "C-r" #'swiper-isearch-backward)
+#+end_src
+** Ace Window
+#+begin_src emacs-lisp
+(when (not (bound-and-true-p evil-state))
+  (map! :leader
+        :desc "split horizontal" "w v" #'split-window-horizontally
+        :desc "split vertical" "w s" #'split-window-vertically
+        :desc "ace window" "w w" #'ace-window
+        :desc "ace window delete" "w d" #'ace-delete-window))
 #+end_src
