@@ -384,16 +384,6 @@ See [[https://emacs.stackexchange.com/questions/79285/why-is-org-highlight-latex
 #+begin_src emacs-lisp
 (map! :map vertico-map "C-l" #'+vertico/enter-or-preview) ;; allow C-l to select an item
 #+end_src
-* Vterm
-#+begin_src emacs-lisp
-(use-package! vterm
-  :ensure nil
-  :config
-  (map! :map vterm-mode-map
-        :i "C-y" #'vterm-yank
-        :i "C-k" #'vterm-send-up
-        :i "C-j" #'vterm-send-down))
-#+end_src
 * Blog
 *NOTE* you need to copy the font awesome directory yourself. This saves a lot of time when exporting static assets.
 #+begin_src emacs-lisp

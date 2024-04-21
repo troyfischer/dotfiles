@@ -85,3 +85,5 @@
   (package! screenshot
     :recipe (:host github :repo "tecosaur/screenshot")))
 (package! leetcode)
+
+(package! counsel)
