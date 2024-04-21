@@ -5,10 +5,7 @@
 # If you don't plan on reverting to bash, you can remove the link in ~/.profile
 # to clean up.
 
-# Default programs:
-export EDITOR="emacs"
-export BROWSER="brave"
-export TERM="alacritty"
+export EDITOR="emacsclient"
 
 # ~/ Clean-up:
 export XDG_CONFIG_HOME="$HOME/.config"
