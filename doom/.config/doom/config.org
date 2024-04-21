@@ -366,12 +366,14 @@ See [[https://emacs.stackexchange.com/questions/79285/why-is-org-highlight-latex
   (interactive)
   (+troy/password-store-dir)
   (magit))
-(map! :leader
-      (:prefix-map ("P" . "Passwords")
-       :desc "password-store-copy" "c" #'password-store-copy
-       :desc "password-store-edit" "e" #'password-store-edit
-       :desc "password-store-otp-token-copy" "o" #'password-store-otp-token-copy
-       :desc "password-store-git" "g" #'+troy/git-password-store))
+(use-package! password-store
+  :config
+  (map! :leader
+        (:prefix-map ("P" . "Passwords")
+         :desc "password-store-copy" "c" #'password-store-copy
+         :desc "password-store-otp-token-copy" "o" #'password-store-otp-token-copy
+         :desc "password-store-git" "g" #'+troy/git-password-store
+         :desc "password-store" "p" #'pass)))
 #+end_src
 * Projectile
 #+begin_src emacs-lisp
