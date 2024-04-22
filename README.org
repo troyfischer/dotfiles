@@ -9,36 +9,6 @@ Organizing dotfiles in this repository for quick start up time on a fresh comput
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 #+end_src
 ** Programs
-*** General
-#+name: programs
-#+begin_src sh
-echo \
-bat \
-cmake \
-fd \
-gcc \
-gnupg \
-mactex \
-neovim \
-node \
-pandoc \
-pass \
-pass-otp \
-pinentry \
-pinentry-mac \
-pipenv \
-qmk \
-ripgrep \
-sassc \
-sqlite \
-stow \
-tmux \
-pngquant \
-#+end_src
-
-#+begin_src sh :var programs=programs :results silent
-brew install $programs
-#+end_src
 *** Browser
 **** Brave
 #+begin_src sh :results silent
