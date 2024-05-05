@@ -536,11 +536,15 @@ I was having issues with [[*Pyright][Pyright]] that was causing this issue but s
 #+end_src
 * abo-abo modes
 ** Avy
+~avy-goto-char-timer~ is a go to movement command (no pun intended)
 #+begin_src emacs-lisp
 (use-package! avy
   :config
   (setq avy-all-windows t)
-  (map! "M-s" #'avy-goto-char-timer))
+  (map! "M-s" #'avy-goto-char-timer)
+  (map! :map dired-mode-map "M-s" #'avy-goto-char-timer)
+  (map! :map eshell-mode-map "M-s" #'avy-goto-char-timer)
+  (map! :map eshell-hist-mode-map "M-s" #'avy-goto-char-timer))
 #+end_src
 ** Swiper
 #+begin_src emacs-lisp
@@ -559,3 +563,16 @@ I was having issues with [[*Pyright][Pyright]] that was causing this issue but s
         :desc "ace window" "w w" #'ace-window
         :desc "ace window delete" "w d" #'ace-delete-window))
 #+end_src
+* Window Hydra
+Predefined Doom Emacs hydra, useful for resizing windows.
+#+begin_src emacs-lisp
+(map! "C-c w h" #' +hydra/window-nav/body)
+#+end_src
+* Misc Non evil bindings
+** Mark Ring
+#+begin_src emacs-lisp
+(when (not (bound-and-true-p evil-state))
+  (map! "C-c s r" #'counsel-mark-ring))
+#+end_src
+** TODO Drag Stuff
+~drag-stuff-up~ & ~drag-stuff-down~ could be useful.
