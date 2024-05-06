@@ -576,3 +576,12 @@ Predefined Doom Emacs hydra, useful for resizing windows.
 #+end_src
 ** TODO Drag Stuff
 ~drag-stuff-up~ & ~drag-stuff-down~ could be useful.
+* Issues with Evil surround
+There's a problem when executing a command like ~ds(~ where it won't find the delimiters. I learned [2024-05-05 Sun 23:00] that doing ~ds)~ will work.
++ https://github.com/emacs-evil/evil-surround/issues/205
++ https://github.com/emacs-evil/evil-surround/issues/204
+
+It seems to be caused by =evil-embrace= so I can also add this to doom's =packages.el=:
+#+begin_src emacs-lisp :tangle no
+(package! evil-embrace :disable t)
+#+end_src
