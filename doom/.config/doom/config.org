@@ -47,15 +47,29 @@
 + Overpass
 + IBM Plex Mono
 + Source Code Pro
++ Monaspace Argon
++ Monaspace Krypton
++ Monaspace Neon
++ Monaspace Radon
++ Monaspace Xenon
 
 #+name: main-font
-: Cascadia Code
+: Monaspace Argon
 
 #+name: variable-font
 : Source Code Pro
 
 #+begin_src emacs-lisp :var main-font=main-font variable-font=variable-font :results none
-(setq +troy/mono-fonts '("Cascadia Code" "Hack" "Fira Code" "Jetbrains Mono" "IBM Plex Mono"))
+(setq +troy/mono-fonts '("Cascadia Code"
+                         "Hack"
+                         "Fira Code"
+                         "Jetbrains Mono"
+                         "IBM Plex Mono"
+                         "Monaspace Argon"
+                         "Monaspace Krypton"
+                         "Monaspace Neon"
+                         "Monaspace Radon"
+                         "Monaspace Xenon"))
 (setq +troy/variable-fonts '("Overpass" "Source Code Pro"))
 (setq +troy/font-types '("Code" "Variable"))
 
@@ -177,8 +191,8 @@ pip3 install --user python-lsp-server
   ((python-mode . (lambda ()
                     (lsp-deferred)))
    (flycheck-mode . (lambda ()
-                      (flycheck-add-next-checker 'lsp 'python-flake8)
-                      (flycheck-add-next-checker 'python-flake8 'python-pylint))))
+                      (flycheck-add-next-checker 'lsp 'python-pyright 'python-ruff))))
+  ;;(flycheck-add-next-checker 'python-flake8 'python-pylint)
   :config
   (setq lsp-pyright-venv-directory "~/.local/share/virtualenvs"
         lsp-pyright-typechecking-mode "off"
@@ -203,6 +217,13 @@ pip3 install -U pyright
 Need to install ~pylint~ and ~flake8~ for flycheck.
 #+begin_src sh :tangle no
 brew install flake8 pylint
+#+end_src
+****** Ruff code formatter
+#+begin_src emacs-lisp
+(defun +troy/python-formatter-hook ()
+  (setq apheleia-formatter 'ruff)
+  (setq flycheck-python-ruff-executable "/opt/homebrew/bin/ruff"))
+(add-hook! python-mode #'+troy/python-formatter-hook)
 #+end_src
 *** Debugging
 =debugpy= is recommended
@@ -246,21 +267,21 @@ Because in general I'm using ~pipenv~ rather than ~pyvenv~
 ***** Behave
 #+begin_src emacs-lisp :tangle no
 (defun +troy/add-behave-template ()
+  (interactive)
   (dap-register-debug-template
    "Python :: Run behave (buffer)"
    (list :type "python"
-         :args "tests/features"
-         :cwd (+troy/get-current-project-root)
+         :args nil
+         :cwd (doom-project-root)
          :program nil
          :module "behave"
          :request "launch"
          :name "Python :: Run behave (buffer)")))
-(add-hook! 'python-mode-hook #'+troy/add-behave-template)
 #+end_src
 *** Formatting
 **** Necessary programs
 #+begin_src sh :tangle no
-brew install black
+brew install ruff
 #+end_src
 **** Optimize Imports
 #+begin_src emacs-lisp :tangle no
@@ -274,7 +295,7 @@ pip3 install -U pyflakes isort
 #+end_src
 ***** Homebrew
 #+begin_src sh :tangle no
-brew install isort
+brew install isort flake8
 #+end_src
 *** Add Pip executables to path
 #+begin_src emacs-lisp
@@ -286,6 +307,11 @@ brew install isort
 (use-package! lsp-java
   :config
   (setq lsp-java-code-generation-hash-code-equals-use-java7objects t))
+#+end_src
+** C++
+#+begin_src emacs-lisp
+(use-package! clang-format)
+(add-hook! 'c++-mode-hook #'lsp-deferred)
 #+end_src
 * Breadcrumbs
 #+begin_src emacs-lisp
@@ -358,6 +384,12 @@ See [[https://emacs.stackexchange.com/questions/79285/why-is-org-highlight-latex
       (setq org-latex-classes nil)))
   )
 #+end_src
+** Babel
+#+begin_src emacs-lisp
+(defun org-babel-edit-prep:python (babel-info)
+  (setq-local buffer-file-name (->> babel-info caddr (alist-get :tangle)))
+  (lsp))
+#+end_src
 * Password Store Keybindings
 #+begin_src emacs-lisp
 (defun +troy/password-store-dir ()
@@ -377,10 +409,14 @@ See [[https://emacs.stackexchange.com/questions/79285/why-is-org-highlight-latex
 #+end_src
 * Projectile
 #+begin_src emacs-lisp
-(map! :leader :desc "ripgrep" "p G" #'projectile-ripgrep)
-(map! :leader :desc "PyCharm" "p P" #'+troy/open-project-in-pycharm)
-(map! :leader :desc "Neovim" "p N" #'+troy/open-project-in-neovim)
-(map! :leader :desc "Neovim" "p n" #'+troy/open-file-in-neovim)
+(use-package! projectile
+  :ensure nil
+  :config
+  (map! :leader :desc "ripgrep" "p G" #'projectile-ripgrep)
+  (map! :leader :desc "PyCharm" "p P" #'+troy/open-project-in-pycharm)
+  (map! :leader :desc "Neovim" "p N" #'+troy/open-project-in-neovim)
+  (map! :leader :desc "Neovim" "p n" #'+troy/open-file-in-neovim)
+  (add-to-list 'projectile-globally-ignored-directories "^\\.venv$"))
 #+end_src
 * Vertico
 #+begin_src emacs-lisp
@@ -402,7 +438,8 @@ See [[https://emacs.stackexchange.com/questions/79285/why-is-org-highlight-latex
          :publishing-directory "~/blog/public"
          :publishing-function org-html-publish-to-html
          :section-numbers nil
-
+         :org-html-link-home "/index.html"
+         :org-html-link-use-abs-url t
          )
         ("blog-static"
          :recursive t
@@ -540,11 +577,7 @@ I was having issues with [[*Pyright][Pyright]] that was causing this issue but s
 #+begin_src emacs-lisp
 (use-package! avy
   :config
-  (setq avy-all-windows t)
-  (map! "M-s" #'avy-goto-char-timer)
-  (map! :map dired-mode-map "M-s" #'avy-goto-char-timer)
-  (map! :map eshell-mode-map "M-s" #'avy-goto-char-timer)
-  (map! :map eshell-hist-mode-map "M-s" #'avy-goto-char-timer))
+  (setq avy-all-windows t))
 #+end_src
 ** Swiper
 #+begin_src emacs-lisp
@@ -562,6 +595,10 @@ I was having issues with [[*Pyright][Pyright]] that was causing this issue but s
         :desc "split vertical" "w s" #'split-window-vertically
         :desc "ace window" "w w" #'ace-window
         :desc "ace window delete" "w d" #'ace-delete-window))
+(when (bound-and-true-p evil-state)
+  (use-package! ace-window
+    :config
+    (map! :leader :desc "ace window" "w C-w" #'ace-window)))
 #+end_src
 * Window Hydra
 Predefined Doom Emacs hydra, useful for resizing windows.
@@ -584,4 +621,11 @@ There's a problem when executing a command like ~ds(~ where it won't find the de
 It seems to be caused by =evil-embrace= so I can also add this to doom's =packages.el=:
 #+begin_src emacs-lisp :tangle no
 (package! evil-embrace :disable t)
+#+end_src
+* Magit
+#+begin_src emacs-lisp
+(use-package! magit
+  :ensure nil
+  :config
+  (setq magit-log-margin '(t "%Y-%m-%d %I:%M %p " magit-log-margin-width t 18)))
 #+end_src

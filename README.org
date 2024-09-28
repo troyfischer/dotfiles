@@ -31,7 +31,8 @@ brew install --cask \
     font-cascadia-code \
     font-cascadia-mono \
     font-ibm-plex \
-    font-source-code-pro
+    font-source-code-pro \
+    font-monaspace
 #+end_src
 ** Doom Emacs
 [[https://github.com/doomemacs/doomemacs][Install Doom Emacs]]
