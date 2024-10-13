@@ -34,6 +34,15 @@ brew install --cask \
     font-source-code-pro \
     font-monaspace
 #+end_src
+*** Tiling Window Manager
+[[https://github.com/nikitabobko/AeroSpace][Aerospace]]
+#+begin_src sh
+brew install aerospace
+#+end_src
+*** [[https://www.keyboardmaestro.com/main/][Keyboard Maestro]]
+#+begin_src sh
+brew install --cask keyboard-maestro
+#+end_src
 ** Doom Emacs
 [[https://github.com/doomemacs/doomemacs][Install Doom Emacs]]
 #+begin_src sh
