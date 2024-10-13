@@ -1,6 +1,7 @@
 #!/bin/sh
 
 #stow profile
+stow aerospace
 stow alacritty
 stow doom
 stow executables
