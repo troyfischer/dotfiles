@@ -140,6 +140,10 @@ alt-ctrl-tab = 'workspace-back-and-forth'
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
 alt-ctrl-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
+# moving workspaces
+cmd-alt-ctrl-h = "workspace --wrap-around prev"
+cmd-alt-ctrl-l = "workspace --wrap-around next"
+
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
 alt-ctrl-shift-semicolon = 'mode service'
 
