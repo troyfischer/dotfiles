@@ -1,5 +1,6 @@
 #+title: README
 #+author: Troy Fischer
+#+startup: overview
 
 * Dotfiles
 Organizing dotfiles in this repository for quick start up time on a fresh computer. Using [[https://www.gnu.org/software/stow/][GNU Stow]] to create the symbolic links.
@@ -101,3 +102,12 @@ gpgconf --kill gpg-agent
 * Notes
 ** Running Behave Tests
 [[https://stackoverflow.com/questions/52725150/how-to-debug-behave-bdd-scenario-using-python-debugger-and-visual-studio-code][dap debug setup for behave tests]]
+** Doom Emacs Misc Notes
+*** TODO Doom's ~packages.el~ question/issue
+Using something like
+#+begin_src emacs-lisp :tangle no
+(package! some-random-package)
+#+end_src
+in ~packages.el~ *does not* necessarily pull the package from its latest commit from github. For example with the [[https://github.com/kaiwk/leetcode.el][leetcode.el]] package I had to go to the straight repo, pull the latest code from origin, delete the build artifacts and ~doom sync~ + restart to get the correct code.
+
+Not sure if that is because github is not the default or what. It pulled the latest tag which had code from 2+ years ago.
