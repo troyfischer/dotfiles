@@ -306,6 +306,9 @@ brew install isort flake8
 #+end_src
 ** Lua
 Requires my neomvim config and using mason to install the server...
+
+
+With regard to ~lsp-lua-workspace-library~ I had the same question as [[https://github.com/emacs-lsp/lsp-mode/issues/2818][this guy]] and am equally dumbfounded.
 #+begin_src emacs-lisp
 (use-package! lsp-lua
   :config
