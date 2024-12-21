@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# Check if Emacs server is running
+if ! emacsclient -e 1 &>/dev/null; then
+  echo "Starting Emacs server..."
+  emacs --daemon
+else
+  echo "Emacs server is already running."
+fi

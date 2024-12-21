@@ -2,11 +2,12 @@
 
 magit () {
     git_root=$(git rev-parse --show-toplevel)
-    emacsclient -a emacs \
+    emacsclient -nw \
         -e "(magit-status \"${git_root}\")"
-    if [[ -f `which osascript` ]]; then
-        osascript -e "tell application \"Emacs\" to activate"
-    fi
+    # if [[ -f `which osascript` ]]; then
+    #     osascript -e "tell application \"Emacs\" to activate"
+    # fi
 }
 
+emacs-server
 magit
