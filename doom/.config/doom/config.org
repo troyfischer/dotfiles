@@ -10,11 +10,12 @@
 (setq user-full-name "Troy Fischer"
       user-mail-address "troytfischer@gmail.com"
       display-line-numbers-type t
-      doom-theme 'doom-old-hope
+      doom-theme 'doom-city-lights
       password-cache-expiry nil   ;; only type password once
       delete-by-moving-to-trash t ;; move files to trash instead of perma deletion
       )
 
+(setq menu-bar-mode -1) ;; otherwise it comes up in terminal mode
 ;; display time in modeline
 (setq display-time-format "%m-%d-%y %l:%M %p"
       display-time-default-load-average nil)
@@ -303,6 +304,17 @@ brew install isort flake8
 (let ((pip-path (concat (shell-command-to-string "echo -n $(python3 -m site --user-base)") "/bin")))
   (add-to-list 'exec-path pip-path))
 #+end_src
+** Lua
+Requires my neomvim config and using mason to install the server...
+#+begin_src emacs-lisp
+(use-package! lsp-lua
+  :config
+  (setq lsp-clients-lua-language-server-bin "/Users/troyfischer/.local/share/nvim/mason/bin/lua-language-server"
+        lsp-clients-lua-language-server-main-location "/Users/troyfischer/.local/share/nvim/mason/packages/lua-language-server/libexec/main.lua")
+  (setq lsp-lua-workspace-library (ht
+                                   ("/Users/troyfischer/.local/share/nvim/site/pack/deps/opt" t)
+                                   ("/opt/homebrew/Cellar/neovim/0.10.2_1/share/nvim/runtime" t))))
+#+end_src
 ** Java
 #+begin_src emacs-lisp :tangle no
 (use-package! lsp-java
@@ -452,7 +464,7 @@ See [[https://emacs.stackexchange.com/questions/79285/why-is-org-highlight-latex
         ("blog" :components ("blog-html" "blog-static"))))
 (defun +troy/publish-blog-remote ()
   (interactive)
-  (async-shell-command "rsync -e ssh -uvrz ~/blog/public/ root@165.227.115.74:/var/www/html/ --delete --chmod=Du=rwx,Dgo=rx,Fu=rw,Fog=r"))
+  (async-shell-command "rsync -L -e ssh -uvrz ~/blog/public/ root@165.227.115.74:/var/www/html/ --delete --chmod=Du=rwx,Dgo=rx,Fu=rw,Fog=r"))
 #+end_src
 ** Note on table of contents
 #+begin_quote
@@ -562,7 +574,10 @@ I was having issues with [[*Pyright][Pyright]] that was causing this issue but s
   (setq leetcode-prefer-language "python3")
   (setq leetcode-prefer-sql "mysql")
   (setq leetcode-save-solutions t)
-  (setq leetcode-directory "~/leetcode"))
+  (setq leetcode-directory "~/leetcode")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]leetcode\\'")
+  (add-hook 'leetcode-solution-mode-hook
+          (lambda() (flycheck-mode -1))))
 #+end_src
 * Yank commands
 #+begin_src emacs-lisp
@@ -629,4 +644,11 @@ It seems to be caused by =evil-embrace= so I can also add this to doom's =packag
   :ensure nil
   :config
   (setq magit-log-margin '(t "%Y-%m-%d %I:%M %p " magit-log-margin-width t 18)))
+#+end_src
+* Edebug
+#+begin_src emacs-lisp
+(put 'aio-defun 'edebug-form-spec
+     '(name
+       (&optional arg-list)
+       body))
 #+end_src
