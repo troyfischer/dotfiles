@@ -10,39 +10,57 @@ Organizing dotfiles in this repository for quick start up time on a fresh comput
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 #+end_src
 ** Programs
-*** Browser
-**** Brave
-#+begin_src sh :results silent
-brew install --cask brave-browser
-#+end_src
-*** Terminal
-#+begin_src
-brew install --cask alacritty kitty
-#+end_src
-*** Fonts
+*** Brewfile
+Tangle the Brewfile
 #+begin_src sh
-brew tap homebrew/cask-fonts
-brew install --cask \
-    font-fira-code \
-    font-fira-code-nerd-font \
-    font-jetbrains-mono \
-    font-jetbrains-mono-nerd-font \
-    font-overpass \
-    font-hack \
-    font-cascadia-code \
-    font-cascadia-mono \
-    font-ibm-plex \
-    font-source-code-pro \
-    font-monaspace
+brew bundle
+brew bundle --file=/path/to/file
 #+end_src
-*** Tiling Window Manager
-[[https://github.com/nikitabobko/AeroSpace][Aerospace]]
-#+begin_src sh
-brew install aerospace
+
+#+begin_src sh :tangle Brewfile
+tap "homebrew/cask"
+tap "homebrew/core"
 #+end_src
-*** [[https://www.keyboardmaestro.com/main/][Keyboard Maestro]]
-#+begin_src sh
-brew install --cask keyboard-maestro
+**** Browser
+***** Brave
+#+begin_src sh :results silent :tangle Brewfile
+cask "brave-browser"
+#+end_src
+**** Terminal
+#+begin_src sh :tangle Brewfile
+cask "alacritty"
+cask "kitty"
+#+end_src
+**** Fonts
+#+begin_src sh :tangle Brewfile
+tap "homebrew/cask-fonts"
+cask "font-fira-code"
+cask "font-fira-code-nerd-font"
+cask "font-jetbrains-mono"
+cask "font-jetbrains-mono-nerd-font"
+cask "font-overpass"
+cask "font-hack"
+cask "font-cascadia-code"
+cask "font-cascadia-mono"
+cask "font-ibm-plex"
+cask "font-source-code-pro"
+cask "font-monaspace"
+#+end_src
+**** Navigation
+Need at least one of these
+***** [[https://github.com/nikitabobko/AeroSpace][Aerospace]]
+#+begin_src sh :tangle Brewfile
+brew "aerospace"
+#+end_src
+***** [[https://www.keyboardmaestro.com/main/][Keyboard Maestro]]
+#+begin_src sh :tangle Brewfile
+cask "keyboard-maestro"
+#+end_src
+**** Programming
+***** Python
+#+begin_src sh :tangle Brewfile
+brew "basedpyright"
+brew "ruff"
 #+end_src
 ** Doom Emacs
 [[https://github.com/doomemacs/doomemacs][Install Doom Emacs]]
