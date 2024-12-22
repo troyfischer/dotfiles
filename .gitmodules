@@ -2,3 +2,7 @@
 	path = nvim/.config/nvim
 	url = git@github.com:troyfischer/config.nvim.git
 	branch = main
+[submodule "doom/.config/doom"]
+	path = doom/.config/doom
+	url = git@github.com:troyfischer/config.doom.git
+	branch = main
