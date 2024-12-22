@@ -1,5 +1,6 @@
 window:
   opacity: 0.8
+  option_as_alt: Both
 
 font:
   size: 16
