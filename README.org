@@ -62,6 +62,11 @@ cask "keyboard-maestro"
 brew "basedpyright"
 brew "ruff"
 #+end_src
+***** Lua
+#+begin_src sh :tangle Brewfile
+brew "lua"
+brew "stylua"
+#+end_src
 ** Doom Emacs
 [[https://github.com/doomemacs/doomemacs][Install Doom Emacs]]
 #+begin_src sh
