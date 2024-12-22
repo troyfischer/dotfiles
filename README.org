@@ -31,6 +31,11 @@ cask "brave-browser"
 cask "alacritty"
 cask "kitty"
 #+end_src
+***** Terminal Programs
+#+begin_src sh :tangle Brewfile
+brew "yazi"
+brew "zoxide"
+#+end_src
 **** Fonts
 #+begin_src sh :tangle Brewfile
 tap "homebrew/cask-fonts"
