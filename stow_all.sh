@@ -9,5 +9,6 @@ stow ideavim
 stow kitty
 stow nvim
 stow tmux
+stow yazi
 stow zprofile
 stow zsh
