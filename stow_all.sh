@@ -12,3 +12,4 @@ stow tmux
 stow yazi
 stow zprofile
 stow zsh
+stow zellij
