@@ -27,3 +27,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # Pipenv
 export PIPENV_VENV_IN_PROJECT=1
+
+# kitty terminal
+alias ksf=kitty @ kitten choose-fonts
+alias kst=kitty @ kitten themes
