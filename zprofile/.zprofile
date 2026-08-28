@@ -5,7 +5,7 @@
 # If you don't plan on reverting to bash, you can remove the link in ~/.profile
 # to clean up.
 
-export EDITOR="nvim"
+export EDITOR="emacs"
 
 # ~/ Clean-up:
 export XDG_CONFIG_HOME="$HOME/.config"

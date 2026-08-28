@@ -8,6 +8,7 @@ stow executables
 stow ideavim
 stow kitty
 stow nvim
+stow nushell
 stow tmux
 stow yazi
 stow zprofile
